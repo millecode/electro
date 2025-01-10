@@ -190,7 +190,7 @@ class CommandeController extends AbstractController
         $lastActiveLogos = $this->logoRepo->findLastActiveLogos();
 
 
-        return $this->render('Commande/success.html.twig', [
+        return $this->render('commande/success.html.twig', [
             'commande' => $commande,
             'categoriess' => $categoriess,
             'produitsDistincts' => $produitsDistincts,
