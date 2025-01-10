@@ -57,7 +57,7 @@ class CommandeController extends AbstractController
         // Dernier logo avec status = true
         $lastActiveLogos = $this->logoRepo->findLastActiveLogos();
 
-        return $this->render('Commande/recap.html.twig', [
+        return $this->render('commande/recap.html.twig', [
             'cartItems' => $cartItems,
             'total' => $total,
             'categoriess' => $categoriess,
