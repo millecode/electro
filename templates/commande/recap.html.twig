@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Récapitulatif de la commande | Electro-Multifix
+{% endblock %}
+
+{% block body %}
+	<section class="container mt-5">
+		<h1>Récapitulatif de votre commande</h1>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Produit</th>
+					<th>Quantité</th>
+					<th>Prix</th>
+					<th>Sous-total</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in cartItems %}
+					<tr>
+						<td>
+							<img src="{{asset('assets/images/produits/'~ item.product.image )}}" class="img-fluid" width="60" alt="">
+							{{ item.product.titre }}</td>
+						<td>{{ item.quantity }}</td>
+						<td>{{ item.product.prix|number_format(2, ',', ' ') }}
+							FDJ</td>
+						<td>{{ (item.product.prix * item.quantity)|number_format(2, ',', ' ') }}
+							FDJ</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+			<tfoot>
+				<tr>
+					<th colspan="3" class="text-end">Total</th>
+					<th>{{ total|number_format(2, ',', ' ') }}
+						FDJ</th>
+				</tr>
+			</tfoot>
+		</table>
+
+
+		<!-- Modal -->
+		<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="paymentModalLabel">Choisissez un moyen de paiement</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<form method="POST" action="{{ path('confirmer_commande') }}">
+						<div class="modal-body">
+							{% if types is empty %}
+								<p class="text-danger">Aucun paiements disponible. Veuillez contactez l'administration du site.</p>
+							{% else %}
+								{% for type in types %}
+									<div class="form-check">
+										<input class="form-check-input" type="radio" name="payment_method" value="{{type.id}}" id="{{type.type}}">
+										<label class="form-check-label" for="{{type.type}}">
+											{{type.type}}-{{type.phone}}
+										</label>
+									</div>
+								{% endfor %}
+							{% endif %}
+
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+							<button type="submit" class="btn btn-primary">Confirmer</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<!-- Bouton pour ouvrir la modal -->
+		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal">
+			Confirmer la commande
+		</button>
+
+	</section>
+{% endblock %}

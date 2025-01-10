@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Mes Réparations | Electro-Multifix
+{% endblock %}
+
+{% block body %}
+
+	{% include 'admin/_menu.html.twig' %}
+
+
+	<div class="container">
+
+
+		<div class="my-3 text-center">
+			<h2>Mes réparations</h2>
+		</div>
+
+		{% for type, messages in app.flashes %}
+			{% for message in messages %}
+				<div class="alert alert-{{ type }} alert-dismissible fade my-2 mx-5 show" role="alert">
+					{{ message }}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			{% endfor %}
+		{% endfor %}
+
+		<!-- Barre de recherche pour filtrer les commandes -->
+		<form method="get" action="{{ path('mes_reparations') }}" class="mb-4">
+			<div class="row">
+				<div class="col-md-4">
+					<select name="status" class="form-control form-select border border-dark">
+						<option value="">Tous les statuts</option>
+						<option value="En cours" {{ app.request.query.get('status') == 'en_cours' ? 'selected' : '' }}>En cours</option>
+						<option value="Terminé" {{ app.request.query.get('status') == 'terminee' ? 'selected' : '' }}>Terminée</option>
+					</select>
+				</div>
+				<div class="col-md-4">
+					<input type="text" name="service" value="{{ app.request.query.get('service') }}" class="form-control border border-dark" placeholder="Rechercher un service">
+				</div>
+				<div class="col-md-4">
+					<button type="submit" class="btn btn-success form-control border border-dark">Rechercher</button>
+				</div>
+			</div>
+		</form>
+
+
+		<!-- Liste des réparations -->
+		{% if reparations is empty %}
+			<div class="alert alert-info">
+				Vous n'avez effectué aucune réparation correspondant à vos critères.
+			</div>
+		{% else %}
+			<div class="row">
+				{% for reparation in reparations %}
+					<div class="col-md-4">
+						<div class="card mb-4 shadow-sm">
+							<div class="card-body">
+
+								<h5 class="card-title">Réparation #{{ reparation.id }}</h5>
+								<p class="card-text">
+									<strong>Date :</strong>
+									{{ reparation.createdAt|date('d/m/Y') }}</p>
+								<p class="card-text">
+									<strong>Statut :</strong>
+									{% if reparation.statusReparation == "Terminé" %}
+										<span class="badge bg-success">Terminée</span>
+									{% else %}
+										<span class="badge bg-warning text-dark">En cours</span>
+									{% endif %}
+								</p>
+								<p class="card-text">
+									<strong>Service :</strong>
+									{{ reparation.service.titre }}</p>
+								<p class="card-text">
+									<strong>Description :</strong>
+									{{ reparation.description|slice(0, 50) ~ '...'  }}</p>
+								<p class="text-center">
+									<a href="{{path('admin_voir_reparation',{'matricule':reparation.matricule,'id':reparation.id})}}" class="btn btn-info">Voir le details</a>
+								</p>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+
+			<!-- Pagination -->
+			<div class="d-flex justify-content-center">
+				{{ knp_pagination_render(reparations) }}
+			</div>
+		{% endif %}
+	</div>
+
+
+{% endblock %}

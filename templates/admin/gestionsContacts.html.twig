@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Gestions des Contacts | Eléctro-Multifix
+{% endblock %}
+
+{% block body %}
+
+	{% include 'admin/_menu.html.twig' %}
+
+
+	<div class="my-3 text-center">
+		<h2>Listes des Contacts</h2>
+	</div>
+
+
+	<div class="container">
+		<div class="row my-5">
+			{% for type, messages in app.flashes %}
+				{% for message in messages %}
+					<div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+						{{ message }}
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				{% endfor %}
+			{% endfor %}
+
+			<!-- Formulaire de recherche -->
+			<form method="get" class="mb-4">
+				<div class="input-group">
+					<input type="text" name="search" value="{{ searchTerm }}" class="form-control" placeholder="Rechercher par nom..." aria-label="Rechercher par nom">
+					<button class="btn btn-primary" type="submit">Rechercher</button>
+				</div>
+			</form>
+			{% if contacts is empty %}
+				<div class="alert alert-info">
+					<p>Aucun contacts reçus</p>
+				</div>
+			{% else %}
+				<div class="table-responsive my-3">
+					<table class="table table-hover rounded">
+						<thead class="text-center table-success">
+							<tr>
+								<th>Nom</th>
+								<th>Email</th>
+								<th>Télèphone</th>
+								<th>Date</th>
+								<th>Sujet</th>
+								<th>Description</th>
+								<th>Status Email</th>
+								<th colspan="3">Action</th>
+							</tr>
+						</thead>
+
+						<tbody class="text-center">
+
+							{% for contact in contacts %}
+								<tr class="align-middle">
+									<td class="text-center align-middle">{{contact.nom}}</td>
+									<td class="text-center align-middle">
+										{{contact.email}}
+									</td>
+									<td class="text-center align-middle">{{contact.phone}}</td>
+									<td class="text-center align-middle">{{contact.date|date('d/m/Y') }}</td>
+									<td class="text-center align-middle">{{contact.sujet}}</td>
+									<td class="text-center align-middle">{{contact.message|slice(0, 10) ~ '...' }}</td>
+									<td class="text-center align-middle">
+										{% if contact.statusemail == true %}
+											<span class="badge bg-success p-1">Confirmer</span>
+										{% else %}
+											<span class="badge bg-danger p-1">non-Confirmer</span>
+										{% endif %}
+									</td>
+									<td class="text-center align-middle ">
+										<form action="{{ path('admin_contact_supp', {'id': contact.id}) }}" method="post" onsubmit="return confirm('Confirmer la suppression du contact ?');" class="d-inline">
+											<input type="hidden" name="_token" value="{{ csrf_token('SUP' ~ contact.id) }}">
+											<button type="submit" class="btn btn-danger">
+												<i class="fa-regular fa-trash-can"></i>
+											</button>
+										</form>
+
+										<a href="{{path('admin_contacts_voir',{'id':contact.id})}}" class="btn btn-info">
+											<i class="fa-solid fa-eye"></i>
+										</a>
+
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+
+
+					</table>
+				</div>
+			{% endif %}
+			<div class="navigation">
+				{{ knp_pagination_render(contacts) }}
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Votre Panier | Electro-Multifix
+{% endblock %}
+
+{% block body %}
+
+	<div class="page-header parallaxie">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="page-header-box">
+						<h1 class="text-anime">Votre Panier</h1>
+						<p>Votre panier est actuelement vide.</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<!-- cart.html.twig -->
+	<section class="container pb-5 mb-2">
+
+		{% if cartItems is empty %}
+			<p class="text-center">Votre panier est vide.</p>
+		{% else %}
+			<div class="row my-5">
+				<div class="col-md-8">
+					<h1 class="h3 mb-4 text-center">Panier</h1>
+
+					<form id="cart-form" action="{{ path('cart_update') }}" method="POST">
+						<div class="table-responsive">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th scope="col">Produit</th>
+										<th scope="col">Prix</th>
+										<th scope="col">Quantité</th>
+										<th scope="col">Total</th>
+										<th scope="col">Actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for item in cartItems %}
+										<tr data-product-id="{{ item.product.id }}">
+											<td>
+												<div class="d-flex align-items-center">
+													<img src="{{ asset('assets/images/produits/'~ item.product.image) }}" alt="{{ item.product.titre }}" width="50" class="img-fluid rounded">
+													<span class="ms-3">{{ item.product.titre }}</span>
+												</div>
+											</td>
+											<td class="align-items-center">{{ item.product.prix }}
+												FDJ</td>
+											<td class="align-items-center">
+												<input type="number" name="quantities[{{ item.product.id }}]" value="{{ item.quantity }}" min="1" class="form-control w-50 product-quantity">
+											</td>
+											<td class="product-total">{{ item.product.prix * item.quantity }}
+												FDJ</td>
+											<td class="align-items-center">
+												<a href="{{ path('cart_remove', {id: item.product.id}) }}" class="btn btn-sm btn-danger">Supprimer</a>
+											</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+
+
+					</form>
+
+				</div>
+				<div class="col-md-4">
+					<h3>Resumer de la commande</h3>
+
+					<div class="d-flex justify-content-between">
+						<p class="h3 mb-5 mt-2">Total à payé :
+							<span id="cart-total">{{ total }}
+								FDJ</span>
+						</p>
+					</div>
+
+					<a href="{{path('commande_recap')}}" class="btn-default">Passer la commande</a>
+				</div>
+			</div>
+		{% endif %}
+
+
+	</section>
+
+	<!-- Ajouter le script JS pour gérer la mise à jour en Ajax -->
+	<!-- Ajouter le script JS pour gérer la mise à jour en Ajax -->
+	<script>
+		// Fonction pour gérer l'update du panier via Ajax
+document.querySelectorAll('.product-quantity').forEach(input => {
+input.addEventListener('change', function (event) {
+const productId = this.name.match(/\d+/)[0]; // Récupérer l'id du produit
+const quantity = this.value;
+
+// Envoi de la requête Ajax pour mettre à jour la quantité
+fetch('/cart/update', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json'
+},
+body: JSON.stringify(
+{productId: productId, quantity: quantity}
+)
+}).then(response => response.json()).then(data => { // Mise à jour du total du produit
+const productRow = document.querySelector (`tr[data-product-id="${productId}"]`);
+productRow.querySelector('.product-total').textContent = data.productTotal + " FDJ";
+// Mise à jour du total global du panier
+document.getElementById('cart-total').textContent = data.cartTotal + " FDJ";
+}).catch(error => console.error('Error:', error));
+});
+});
+	</script>
+
+{% endblock %}

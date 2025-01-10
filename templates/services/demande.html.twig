@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Demande de service | Electro-Multifix
+{% endblock %}
+
+{% block body %}
+
+	<!-- Page Header Section Start -->
+	<div class="page-header parallaxie">
+		<div class="container">
+			<div class="row">
+				<div
+					class="col-md-12">
+					<!-- Subpage Header Box Start -->
+					<div class="page-header-box">
+						<h1 class="text-anime">Demande d'un service</h1>
+						<p>Tous nos service sont sous garantie.</p>
+					</div>
+					<!-- Subpage Header Box End -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Page Header Section End -->
+
+
+	<div class="container mt-4 mb-5">
+		<h1 class="mb-4 text-center">Faire une demande de service</h1>
+
+		<div class="row">
+
+			<div class="col-12 col-md-2"></div>
+
+			<div class="col-12 col-md-8">
+				{% for type, messages in app.flashes %}
+					{% for message in messages %}
+						<div class="alert alert-{{ type }} my-2 alert-dismissible fade show" role="alert">
+							{{ message }}
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+					{% endfor %}
+				{% endfor %}
+				{{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+				<div class="row">
+					<div class="col-12 col-md-6 mt-3">
+						<div class="form-group">
+							{{ form_label(form.nom) }}
+							{{ form_widget(form.nom) }}
+						</div>
+					</div>
+
+					<div class="col-12 col-md-6 mt-3">
+						<div class="form-group">
+							{{ form_label(form.email) }}
+							{{ form_widget(form.email, {
+    							'attr': {
+        							'value': app.user ? app.user.email : ''
+    							}
+							   })
+							}}
+
+						</div>
+					</div>
+
+					<div class="col-12 col-md-4 mt-3">
+						<div class="form-group">
+							{{ form_label(form.phone) }}
+							{{ form_widget(form.phone) }}
+						</div>
+					</div>
+
+					<div class="col-12 col-md-4 mt-3">
+						<div class="form-group">
+							{{ form_label(form.imageFile) }}
+							{{ form_widget(form.imageFile) }}
+						</div>
+					</div>
+
+					<div class="col-12 col-md-4 mt-3">
+						<div class="form-group">
+							{{ form_label(form.service) }}
+							{{ form_widget(form.service) }}
+						</div>
+					</div>
+				</div>
+
+
+				<div class="form-group mt-3">
+					{{ form_label(form.description) }}
+					{{ form_widget(form.description) }}
+				</div>
+
+
+				<div class="form-group mt-3 text-center">
+					<input type="submit" class="btn-default" value="Envoyer">
+				</div>
+				{{ form_end(form) }}
+			</div>
+
+			<div class="col-12 col-md-2"></div>
+		</div>
+	</div>
+{% endblock %}

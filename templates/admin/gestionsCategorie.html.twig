@@ -1,0 +1,95 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Gestions des Catégories | Electro-Multifix
+{% endblock %}
+
+{% block body %}
+
+	{% include 'admin/_menu.html.twig' %}
+
+
+	<div class="my-3 text-center">
+		<h2>Gestions des catégories</h2>
+	</div>
+
+
+	<div class="container">
+		<a href="{{path('admin_paiement_type')}}" class="mt-5 btn btn-sm btn-info">Gestions des paiements</a>
+		<div class="row my-5">
+
+			<div class="col-12 col-md-4">
+				{% for type, messages in app.flashes %}
+					{% for message in messages %}
+						<div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+							{{ message }}
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+					{% endfor %}
+				{% endfor %}
+				<div class="card">
+					<div class="card-header">
+						<h5 class="text-center">Enregistrer une catégorie</h5>
+					</div>
+
+					<div class="card-body">
+						{{form_start(form)}}
+						{{form_widget(form)}}
+						<input type="submit" value="Enregistrer" class="btn btn-success">
+						{{form_end(form)}}
+					</div>
+				</div>
+			</div>
+
+
+			<div class="col-12 col-md-8">
+				<h6 class="my-3">Liste des Catégories</h6>
+				{% if categories is empty %}
+					<div class="alert alert-info">
+						<p>Aucune catégorie trouvée.</p>
+					</div>
+				{% else %}
+
+
+					<div class="table-responsive my-3">
+						<table class="table table-hover rounded">
+							<thead class="text-center table-success">
+								<tr>
+
+									<th>Nom du catégorie</th>
+									<th>Nombre de produits associés</th>
+									<th colspan="2">Action</th>
+								</tr>
+							</thead>
+
+							<tbody class="text-center">
+								{% for categorie in categories %}
+									<tr class="align-middle">
+										<td class="text-center align-middle">{{categorie.categorie}}</td>
+										<td class="text-center align-middle">{{ categorie.productCount}}</td>
+
+
+										<td class="text-center align-middle ">
+											<form action="{{path('admin_categorie_supp',{'id':categorie.id})}}" method="post" onsubmit="return confirm('Confirmer la suppression du catégorie ?');" class="d-inline">
+												<input type="hidden" name="_token" value="{{ csrf_token('SUP' ~ categorie.id) }}">
+												<button type="submit" class="btn btn-danger">
+													<i class="fa-regular fa-trash-can"></i>
+												</button>
+											</form>
+											<a href="{{path('admin_categorie_modif',{'id':categorie.id})}}" class="btn btn-warning">
+												<i class="fa-regular fa-pen-to-square"></i>
+											</a>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<div class="navigation">
+						{{ knp_pagination_render(categories) }}
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

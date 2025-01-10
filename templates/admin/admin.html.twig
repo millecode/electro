@@ -1,0 +1,218 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Administration du site | Electro-Multifix
+{% endblock %}
+
+{% block body %}
+
+	{% include 'admin/_menu.html.twig' %}
+
+
+	<div class="container">
+		{% if app.user.fonction == "ROLE_ADMIN" %}
+			<div class="row my-5">
+				<div class="col-12 col-sm-6 col-md-4 col-lg-3">
+					<div class="card alert alert-danger text-center">
+						<div class="row g-0 align-items-center">
+							<div class="col-md-4">
+								<img src="{{asset('assets/images/icone/service.png')}}" class="img-fluid" width="60px" alt="...">
+							</div>
+							<div class="col-md-8">
+								<div class="card-body">
+									<h6 class="card-title">
+										{{ productStats.total }}
+										Produits
+									</h6>
+
+								</div>
+							</div>
+						</div>
+						<span class="mx-auto">
+							<span class="badge bg-info">{{ productStats.active }}
+								Activé</span>
+							<span class="badge bg-success">{{ productStats.disabled }}
+								Desactivé</span>
+						</span>
+					</div>
+
+				</div>
+
+
+				<div class="col-12 col-sm-6 col-md-4 col-lg-3">
+					<div class="card alert alert-info text-center">
+						<div class="row g-0 align-items-center">
+							<div class="col-md-4">
+								<img src="{{asset('assets/images/icone/programme.png')}}" class="img-fluid" width="60px" alt="...">
+							</div>
+							<div class="col-md-8">
+								<div class="card-body">
+									<h6 class="card-title">
+										{{ orderStats.total }}
+										Commandes
+									</h6>
+								</div>
+							</div>
+						</div>
+						<span class="mx-auto">
+							<span class="badge bg-warning">{{ orderStats.in_progress }}
+								En cours</span>
+							<span class="badge bg-secondary">{{ orderStats.completed }}
+								Terminer</span>
+						</span>
+					</div>
+
+				</div>
+
+				<div class="col-12 col-sm-6 col-md-4 col-lg-3">
+					<div class="card alert alert-primary text-center">
+						<div class="row g-0 align-items-center">
+							<div class="col-md-4">
+								<img src="{{asset('assets/images/icone/equipe.png')}}" class="img-fluid" width="60px" alt="...">
+							</div>
+							<div class="col-md-8">
+								<div class="card-body">
+									<h6 class="card-title">
+										{{ repairStats.total }}
+										Reparartion
+									</h6>
+								</div>
+							</div>
+						</div>
+
+						<span class="mx-auto">
+							<span class="badge bg-info">
+								{{ repairStats.in_progress }}
+								En cours
+							</span>
+
+							<span class="badge bg-success">
+								{{ repairStats.completed }}
+								Terminer
+							</span>
+						</span>
+					</div>
+				</div>
+
+				<div class="col-12 col-sm-6 col-md-4 col-lg-3">
+					<div class="card alert alert-warning text-center">
+						<div class="row g-0 align-items-center">
+							<div class="col-md-4">
+								<img src="{{asset('assets/images/icone/contact.png')}}" class="img-fluid" width="60px" alt="...">
+							</div>
+							<div class="col-md-8">
+								<div class="card-body">
+									<h6 class="card-title">
+										{{ contactStats.total }}
+										Contact
+									</h6>
+								</div>
+							</div>
+						</div>
+						<span class="mx-auto">
+							<span class="badge bg-warning">
+								{{ contactStats.confirmed }}
+								Confirmer
+							</span>
+							<span class="badge bg-secondary">
+								{{ contactStats.not_confirmed }}
+								Non-confirmer
+							</span>
+						</span>
+					</div>
+				</div>
+
+			</div>
+		{% endif %}
+
+
+		<div class="my-3 text-center">
+			<h2>Liste des Commandes</h2>
+		</div>
+
+		{% for type, messages in app.flashes %}
+			{% for message in messages %}
+				<div class="alert alert-{{ type }} alert-dismissible fade my-2 mx-5 show" role="alert">
+					{{ message }}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			{% endfor %}
+		{% endfor %}
+
+		<!-- Barre de recherche -->
+		<form method="get" class="row mb-4 d-flex justify-content-center">
+			<div class="col-md-4">
+				<input type="text" name="search" class="form-control border border-dark" placeholder="Rechercher (Produit, Nom, Téléphone)" value="{{ searchTerm }}">
+			</div>
+			<div class="col-md-3">
+				<select name="status" class="form-control border border-dark">
+					<option value="">Tous les statuts</option>
+					<option value="1" {% if statusFilter == '1' %} selected {% endif %}>Terminé</option>
+					<option value="0" {% if statusFilter == '0' %} selected {% endif %}>En cours</option>
+				</select>
+			</div>
+			<div class="col-md-2">
+				<input type="submit" class="btn btn-success form-control border border-dark" value="Rechercher">
+			</div>
+		</form>
+
+		<div class="table-responsive my-3">
+			{% if commandes is empty %}
+				<p class="text-center alert alert-info">Aucune Commande trouvée.</p>
+			{% else %}
+				<table class="table  table-hover">
+					<thead class="text-center bg-info">
+						<tr>
+							<th>Numeros de commande</th>
+							<th>Date de la commande</th>
+							<th>Status</th>
+							<th>Prix total</th>
+							<th colspan="2">Action</th>
+						</tr>
+					</thead>
+
+					<tbody class="text-center">
+						{% for commande in commandes %}
+							<tr>
+								<td>{{ commande.matricule }}</td>
+								<td>
+									{{ commande.createdAt|date('d-m-Y H:i') }}
+								</td>
+								<td>
+									{% if commande.status %}
+										<span class="badge bg-success">Terminé</span>
+									{% else %}
+										<span class="badge bg-warning">En cours</span>
+									{% endif %}
+								</td>
+								<td>
+									{{ commande.prixtotal  | number_format(0, '', ' ') }}
+									DJF
+								</td>
+
+
+								<td>
+									<a href="{{path('commande_passer',{'matricule':commande.matricule,'id':commande.id})}}" class="btn btn-info">
+										<i class="fas fa-eye"></i>
+									</a>
+									{% if app.user.fonction == "ROLE_ADMIN" %}
+										<form action="{{path('commande_delete',{'id':commande.id})}}" method="post" style="display:inline;">
+											<button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette commande ?')">
+												<i class="fas fa-trash"></i>
+											</button>
+										</form>
+									{% endif %}
+								</td>
+							</tr>
+
+						{% endfor %}
+					</tbody>
+				</table>
+			{% endif %}
+		</div>
+		<!-- Pagination -->
+		<div class="d-flex justify-content-center">
+			{{ knp_pagination_render(commandes) }}
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Ajouter un produit  | Eléctro-Multifix
+{% endblock %}
+
+{% block body %}
+	{% include 'admin/_menu.html.twig' %}
+
+
+	<div class="my-3 text-center">
+		<h2>Ajouter un produit</h2>
+	</div>
+
+
+	<div class="container">
+		<div class="row my-5">
+			{% for type, messages in app.flashes %}
+				{% for message in messages %}
+					<div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+						{{ message }}
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				{% endfor %}
+			{% endfor %}
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header">
+						<h5 class="text-center">Enregistrer un produit</h5>
+					</div>
+
+					<div class="card-body">
+						{{form_start(form)}}
+						<div class="row">
+							<div class="col-12 col-md-6">
+								{{form_row(form.titre)}}
+							</div>
+
+							<div class="col-12 col-md-6">
+								{{form_row(form.categorie)}}
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12">
+								{{form_row(form.description)}}
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12 col-md-6">
+								{{form_row(form.prix)}}
+							</div>
+
+							<div class="col-12 col-md-6">
+								{{form_row(form.quantiter)}}
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-12">
+								{{form_row(form.imageFile)}}
+							</div>
+						</div>
+
+
+						<input type="submit" value="Enregistrer" class="btn btn-success">
+						{{form_end(form)}}
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Details du contacts | Electro-Multifix
+{% endblock %}
+
+{% block body %}
+	{% include 'admin/_menu.html.twig' %}
+
+
+	<div class="my-3 text-center">
+		<h2>Contact n°
+			{{contact.id}}</h2>
+		<h5>{{contact.nom}}</h5>
+	</div>
+
+
+	<div class="container">
+
+		<div class="card my-5">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-md-6">
+						<h5>Télèphone :</h5>
+						<p>{{contact.phone}}</p>
+
+						<h5>Date de contact :</h5>
+						<p>{{contact.date|date('d/m/Y')}}</p>
+
+
+						<h5>Email :</h5>
+						<p>{{contact.email}}</p>
+
+
+						<h5>Sujet de contact :</h5>
+						<p>{{contact.sujet}}</p>
+					</div>
+
+					<div class="col-md-6">
+
+						<h5>Message du contact :</h5>
+						<p class="border border-1 rounded p-3">
+							{{contact.message}}
+						</p>
+
+					</div>
+				</div>
+				<form action="{{ path('admin_contact_supp', {'id': contact.id}) }}" method="post" onsubmit="return confirm('Confirmer la suppression du contact ?');" class="d-inline">
+					<input type="hidden" name="_token" value="{{ csrf_token('SUP' ~ contact.id) }}">
+					<button type="submit" class="btn btn-danger">
+						<i class="fa-regular fa-trash-can"></i>
+						Supprimer ce contact
+					</button>
+				</form>
+			</div>
+		</div>
+
+	</div>
+
+{% endblock %}

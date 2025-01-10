@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Gestions des methodes de paiement  | Electro-Multifix
+{% endblock %}
+
+{% block body %}
+
+	{% include 'admin/_menu.html.twig' %}
+
+
+	<div class="my-3 text-center">
+		<h2>Gestions des moyens de paiement</h2>
+	</div>
+
+
+	<div class="container">
+		<div class="row my-5">
+
+			<div class="col-12 col-md-4">
+				{% for type, messages in app.flashes %}
+					{% for message in messages %}
+						<div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+							{{ message }}
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+					{% endfor %}
+				{% endfor %}
+				<div class="card">
+					<div class="card-header">
+						<h5 class="text-center">Enregistrer un Moyen de paiement</h5>
+					</div>
+
+					<div class="card-body">
+						{{form_start(form)}}
+						{{form_widget(form)}}
+						<input type="submit" value="Enregistrer" class="btn btn-success">
+						{{form_end(form)}}
+					</div>
+				</div>
+			</div>
+
+
+			<div class="col-12 col-md-8">
+				<h6 class="my-3">Liste des types des paiements</h6>
+				{% if types is empty %}
+					<div class="alert alert-info">
+						<p>Aucun moyen de paiement trouvée.</p>
+					</div>
+				{% else %}
+
+
+					<div class="table-responsive my-3">
+						<table class="table table-hover rounded">
+							<thead class="text-center table-info">
+								<tr>
+
+									<th>Nom paiement</th>
+									<th>Téléphone associés</th>
+									<th colspan="2">Action</th>
+								</tr>
+							</thead>
+
+							<tbody class="text-center">
+								{% for type in types %}
+									<tr class="align-middle">
+										<td class="text-center align-middle">{{type.type}}</td>
+										<td class="text-center align-middle">{{ type.phone}}</td>
+
+
+										<td class="text-center align-middle ">
+											<form action="{{path('admin_paiement_supp',{'id':type.id})}}" method="post" onsubmit="return confirm('Confirmer la suppression du catégorie ?');" class="d-inline">
+												<input type="hidden" name="_token" value="{{ csrf_token('SUP' ~ type.id) }}">
+												<button type="submit" class="btn btn-danger">
+													<i class="fa-regular fa-trash-can"></i>
+												</button>
+											</form>
+											<a href="{{path('admin_paiement_modif',{'id':type.id})}}" class="btn btn-warning">
+												<i class="fa-regular fa-pen-to-square"></i>
+											</a>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

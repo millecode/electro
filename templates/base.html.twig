@@ -1,17 +1,306 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>
+			{% block title %}Welcome!
+			{% endblock %}
+		</title>
+		<link
+		rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+		<!-- Google Fonts css-->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+		<link
+		href="../../../css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+		<!-- Bootstrap css -->
+		<link
+		href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" media="screen">
+		<!-- SlickNav css -->
+		<link
+		href="{{asset('assets/css/slicknav.min.css')}}" rel="stylesheet">
+		<!-- Swiper css -->
+		<link
+		rel="stylesheet" href="{{asset('assets/css/swiper-bundle.min.css')}}">
+		<!-- Font Awesome icon css-->
+		<link
+		href="{{asset('assets/css/all.min.css')}}" rel="stylesheet" media="screen">
+		<!-- Animated css -->
+		<link
+		href="{{asset('assets/css/animate.css')}}" rel="stylesheet">
+		<!-- Magnific css -->
+		<link
+		href="{{asset('assets/css/magnific-popup.css')}}" rel="stylesheet">
+		<!-- Main custom css -->
+		<link href="{{asset('assets/css/custom.css')}}" rel="stylesheet" media="screen">
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+		{% block javascripts %}
+			{% block importmap %}
+				{{ importmap('app') }}
+			{% endblock %}
+		{% endblock %}
+		{% block stylesheets %}{% endblock %}
+
+	</head>
+	<body>
+		<!-- Header Start -->
+		<header class="main-header">
+			<div class="header-sticky">
+				<nav class="navbar navbar-expand-lg">
+					<div
+						class="container">
+						<!-- Logo Start -->
+						{% if logo is empty %}
+							<p class="alert alert-info">Logo indisponible</p>
+						{% else %}
+							<a class="navbar-brand" href="{{path('home')}}">
+								<img src="{{asset('assets/images/logos/' ~ logo.image)}}" alt="Logo">
+							</a>
+						{% endif %}
+						<!-- Logo End -->
+
+						<!-- Main Menu start -->
+						<div class="collapse navbar-collapse main-menu">
+							<ul class="navbar-nav mr-auto" id="menu">
+
+								<li class="nav-item">
+									<a class="nav-link" href="{{path('home')}}">
+										Accueil
+									</a>
+								</li>
+								<li class="nav-item submenu">
+									<a class="nav-link" href="{{path('liste_categorie')}}">
+										Produits
+									</a>
+									<ul>
+										{% if categoriess is empty %}
+											<li class="nav-item">
+												<p class="text-light">Aucune Categorie disponible</p>
+											</li>
+										{% else %}
+											{% for categorie in categoriess %}
+												<li class="nav-item">
+													<a class="nav-link" href="">{{categorie.categorie}}</a>
+												</li>
+											{% endfor %}
+										{% endif %}
+
+									</ul>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="{{path('service')}}">
+										Nos services
+									</a>
+								</li>
+
+								<li class="nav-item ">
+									<a class="nav-link" href="{{path('contact')}}">
+										Contactez-nous
+									</a>
+								</li>
+
+
+								<li class="nav-item submenu">
+									<a class="nav-link" href="">
+										Compte
+									</a>
+									<ul>
+										{% if app.user %}
+
+
+											{% if app.user.fonction == "ROLE_CLIENT" %}
+												<li class="nav-item">
+													<a class="nav-link" href="{{path('mes_commandes')}}">Espace membre</a>
+												</li>
+											{% else %}
+												<li class="nav-item">
+													<a class="nav-link" href="{{path('admin')}}">Espace membre</a>
+												</li>
+												<li class="nav-item">
+													<a class="nav-link" href="{{path('mes_commandes')}}">Mes commandes</a>
+												</li>
+												<li class="nav-item">
+													<a class="nav-link" href="{{path('mes_reparations')}}">Mes Réparations</a>
+												</li>
+											{% endif %}
+
+											<li class="nav-item">
+												<a class="nav-link" href="{{path('profile')}}">Profile</a>
+											</li>
+
+											<li class="nav-item">
+												<a class="nav-link" href="{{path('app_logout')}}">Se déconnecter</a>
+											</li>
+
+										{% else %}
+
+											<li class="nav-item">
+												<a class="nav-link" href="{{path('inscription')}}">S'inscrire</a>
+											</li>
+											<li class="nav-item">
+												<a class="nav-link" href="{{path('app_login')}}">Se connecter</a>
+											</li>
+
+										{% endif %}
+									</ul>
+								</li>
+
+								<li class="nav-item highlighted-menu d-none d-lg-block">
+									<form action="#" method="get">
+										<div class="row g-0 align-items-center">
+											<div class="col-sm-8">
+												<input type="text" class="form-control" placeholder="Entrer un produit....">
+											</div>
+											<div class="col-sm-4">
+												<button type="submit" class="btn-default">
+													<i class="fa-solid fa-magnifying-glass"></i>
+												</button>
+											</div>
+										</div>
+									</form>
+								</li>
+							</ul>
+						</div>
+						<!-- Main Menu End -->
+						<div class="d-flex align-items-center">
+							<a href="{{path('cart')}}" class="mx-2 text-secondary">
+								<i class="fa-solid fa-cart-shopping h2"></i>
+							</a>
+							<div class="navbar-toggle"></div>
+						</div>
+
+					</div>
+				</nav>
+
+				<div class="responsive-menu"></div>
+			</div>
+		</header>
+		<!-- Header End -->
+		{% block body %}{% endblock %}
+		<!-- Footer Section Start -->
+		<footer
+			class="footer">
+			<!-- Footer Newsletter Start -->
+			<div class="footer-newsletter">
+				<div class="container">
+					<div class="row">
+						<div
+							class="col-md-12">
+							<!-- Newsletter Box Start -->
+							<div class="newsletter-box">
+								<div class="row align-items-center">
+									<div
+										class="col-lg-6">
+										<!-- Section Title Start -->
+										<div class="newsletter-title">
+											<h2>Vous avez des questions ?</h2>
+											<p>En vous reponde le plus rapidement possible.</p>
+										</div>
+										<!-- Section Title End -->
+									</div>
+
+									<div
+										class="col-lg-6">
+										<!-- Newsletter Form Start -->
+										<div class="newsletter-form">
+											<form action="#">
+												<div class="row g-0 align-items-center">
+													<div class="col-sm-4"></div>
+													<div class="col-sm-4">
+														<a href="{{path('contact')}}" class="btn-default">Contactez-nous
+															<i class="fa-solid fa-arrow-right"></i>
+														</a>
+													</div>
+												</div>
+											</form>
+										</div>
+										<!-- Newsletter Form End -->
+									</div>
+								</div>
+							</div>
+							<!-- Newsletter Box End -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Footer Newsletter End -->
+
+			<!-- Mega Footer Start -->
+			<div class="mega-footer">
+				<div class="container">
+					<div class="row">
+						<div
+							class="text-center">
+							<!-- Footer About Start -->
+							<div
+								class="footer-about text-center">
+								<!-- Footer Social Link Start -->
+								<div class="footer-social-links">
+									<ul>
+										<li><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>
+										<li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
+										<li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
+										<li><a href="#"><i class="fa-brands fa-linkedin-in"></i></a></li>
+									</ul>
+								</div>
+								<!-- Footer Social Link End -->
+							</div>
+							<!-- Footer About End -->
+							<!-- Footer Copyright Section Start -->
+							<div class="footer-copyright-links">
+								<div class="container">
+									<div
+										class="row  text-light ">
+
+										<!-- Footer Copyright Content Start -->
+										<div class="footer-copyright text-center">
+											<p>Copyright ©
+												{{ "now"|date("d/m/Y H:i:s") }}
+												. Electro-Multifix. Tous droit reserver. crée par
+												<a href="https://millecode.com/" target="_blank" class="text-danger">Millecode</a>
+											</p>
+										</div>
+										<!-- Footer Copyright Content End -->
+									</div>
+								</div>
+							</div>
+							<!-- Footer Copyright Section End -->
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<!-- Mega Footer End -->
+		</footer>
+		<!-- Footer Section End -->
+		<!-- Jquery Library File -->
+		<script src="{{asset('assets/js/jquery-3.7.1.min.js')}}"></script>
+		<!-- Bootstrap js file -->
+		<script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
+		<!-- Validator js file -->
+		<script src="{{asset('assets/js/validator.min.js')}}"></script>
+		<!-- SlickNav js file -->
+		<script src="{{asset('assets/js/jquery.slicknav.js')}}"></script>
+		<!-- Swiper js file -->
+		<script src="{{asset('assets/js/swiper-bundle.min.js')}}"></script>
+		<!-- Counter js file -->
+		<script src="{{asset('assets/js/jquery.waypoints.min.js')}}"></script>
+		<script src="{{asset('assets/js/jquery.counterup.min.js')}}"></script>
+		<!-- Magnific js file -->
+		<script src="{{asset('assets/js/jquery.magnific-popup.min.js')}}"></script>
+		<!-- SmoothScroll -->
+		<script src="{{asset('assets/js/SmoothScroll.js')}}"></script>
+		<!-- Parallax js -->
+		<script src="{{asset('assets/js/parallaxie.js')}}"></script>
+
+		<!-- Text Effect js file -->
+		<script src="{{asset('assets/js/splitType.js')}}"></script>
+		<script src="{{asset('assets/js/ScrollTrigger.min.js')}}"></script>
+		<!-- Wow js file -->
+		<script src="{{asset('assets/js/wow.js')}}"></script>
+		<!-- Main Custom js file -->
+		<script src="{{asset('assets/js/function.js')}}"></script>
+	</body>
 </html>

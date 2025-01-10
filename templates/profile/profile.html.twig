@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+	Votre profile | Electro-Multifix
+{% endblock %}
+{% block body %}
+
+
+	<div class="page-header parallaxie">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="page-header-box">
+						<h1 class="text-anime">Profile</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div
+				class="col-md-8">
+				<!-- Profile Card -->
+				<div class="card shadow-lg">
+					<div class="card-header bg-primary text-white text-center">
+						<h4>Mon Profil</h4>
+					</div>
+					<div class="card-body">
+						<div class="row">
+
+							<div class="col">
+								<ul class="list-group">
+									<li class="list-group-item">
+										<strong>Nom :</strong>
+										{{ app.user.nom }}
+									</li>
+									<li class="list-group-item">
+										<strong>Email :</strong>
+										{{ app.user.email }}
+									</li>
+									<li class="list-group-item">
+										<strong>Fonction :</strong>
+										{% if 'ROLE_ADMIN' in app.user.roles %}
+											ADMIN
+										{% elseif 'ROLE_EMPLOYER' in app.user.roles %}
+											EMPLOYER
+										{% else %}
+											CLIENT
+										{% endif %}
+									</li>
+									<li class="list-group-item">
+										<strong>Téléphone :</strong>
+										{{ app.user.phone }}
+									</li>
+									<li class="list-group-item">
+										<strong>Adresse :</strong>
+										{{ app.user.adresse }}
+									</li>
+									<li class="list-group-item">
+										<strong>Date d'inscription :</strong>
+										{{ app.user.date|date('d/m/Y') }}
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="card-footer text-center">
+						<a href="{{ path('modifier_profile') }}" class="btn btn-success me-2 my-2">Modifier votre profil</a>
+						<a href="{{ path('modifier_password') }}" class="btn btn-warning my-2">Modifier le mot de passe</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

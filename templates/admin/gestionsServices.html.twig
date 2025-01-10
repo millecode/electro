@@ -1,0 +1,205 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Gestion des services | Electro-Multifix
+{% endblock %}
+
+{% block body %}
+
+	{% include 'admin/_menu.html.twig' %}
+
+
+	<div class="my-3 text-center">
+		<h2>Gestion des services</h2>
+	</div>
+
+	<div class="container">
+		<div class="row my-5">
+			<div class="col-12 col-sm-6 col-md-6 col-lg-6 d-flex justify-content-center align-items-center">
+				<div class="card bg-light text-center mt-2 p-2">
+					<div class="row g-0 align-items-center">
+						<div class="col-md-4">
+							<img src="{{asset('assets/images/icone/service.png')}}" class="img-fluid" width="60px" alt="...">
+						</div>
+						<div class="col-md-8">
+							<div class="card-body">
+								<h6 class="card-title">
+									{{serviceTotale}}
+									Services Publier
+								</h6>
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+
+			<div class="col-12 col-sm-6 col-md-6 col-lg-6 d-flex justify-content-center align-items-center ">
+				<div class="card bg-light text-center mt-2 p-2">
+					<div class="row g-0 align-items-center">
+						<div class="col-md-4">
+							<img src="{{asset('assets/images/icone/programme.png')}}" class="img-fluid" width="60px" alt="...">
+						</div>
+						<div class="col-md-8">
+							<div class="card-body">
+								<h6 class="card-title">
+									{{reparationTotale}}
+									Réparation Effectuer
+								</h6>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+
+
+		</div>
+
+
+		<div class="row my-3 text-center">
+			<div class="col-12 col-sm-6 col-md-4">
+				<a href="{{path('admin_services_listes')}}" class="btn btn-warning my-2">Liste des services</a>
+			</div>
+
+
+			<div class="col-12 col-sm-6 col-md-4">
+				<a href="{{path('admin_reparations_ajouter')}}" class="btn btn-success my-2">Enregistrer une réparation</a>
+			</div>
+
+			<div class="col-12 col-sm-6 col-md-4">
+				<a href="{{path('admin_demande')}}" class="btn btn-info my-2">
+					Gestions de Demande de réparartion</a>
+			</div>
+		</div>
+
+
+		<div class="row">
+			<div class="col-12 col-md-4">
+
+				<div class="table-reponsive">
+					<table class="table table-striped table-bordered border-dark">
+						<thead>
+							<tr class="text-center">
+								<th colspan="3">Statistiques des Réparations par Utilisateur</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for stat in userStatisticsReparation %}
+								<tr>
+									<td>
+										<a href="{{path('admin_voir_user',{'matricule':stat.matricule,'id':stat.user_id})}}">{{ stat.user_nom }}</a>
+									</td>
+
+
+									<td>
+										{{ stat.repair_count }}
+										réparation</td>
+								</tr>
+
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="col-12 col-md-8">
+				<h4 class="text-center text-primary">Liste des réparations Effectuée.</h4>
+				{% for type, messages in app.flashes %}
+					{% for message in messages %}
+						<div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+							{{ message }}
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+					{% endfor %}
+				{% endfor %}
+
+
+				<form method="get" class="my-4">
+					<div class="row">
+						<div class="col-md-4 my-2">
+							<input type="text" name="search_phone" class="form-control border border-dark" placeholder="Rechercher par téléphone" value="{{ search_phone }}">
+						</div>
+						<div class="col-md-4 my-2">
+							<select name="search_service" class="form-control border border-dark">
+								<option value="">Tous les services</option>
+								{% for service in servicesActifs %}
+									<option value="{{ service.id }}" {% if service.id == search_service %} selected {% endif %}>
+										{{ service.titre }}
+									</option>
+								{% endfor %}
+							</select>
+						</div>
+						<div class="col-md-4 my-2">
+							<button type="submit" class="btn btn-primary form-control border border-danger">Rechercher</button>
+						</div>
+					</div>
+				</form>
+
+				{% if reparations is empty  %}
+					<div class="alert alert-info my-2">
+						<p>Aucun réparation trouvée.</p>
+					</div>
+				{% else %}
+
+					<div class="row my-2 table-responsive">
+						<table class="table table-striped align-items-center">
+							<thead class="text-center ">
+								<tr>
+									<th>Image</th>
+									<th>Service</th>
+									<th>Prix</th>
+									<th>Téléphone Client</th>
+									<th>Status</th>
+									<th colspan="3">Action</th>
+								</tr>
+							</thead>
+							<tbody class="text-center ">
+								{% for reparation in reparations %}
+
+									<tr>
+										<td class="align-middle"><img src="{{asset('assets/images/reparations/'~ reparation.image)}}" class="img-fluid rounded" width="70px" alt="{{reparation.service.titre}}"></td>
+										<td class="align-middle">{{reparation.service.titre}}</td>
+										<td class="align-middle">
+											{{reparation.prix | number_format(0, '', ' ')}}
+											FDJ
+										</td>
+										<td class="align-middle">{{reparation.phone}}</td>
+										<td class="align-middle">
+											{% if reparation.statusReparation =="Terminé" %}
+												<span class="badge bg-success p-1">Terminer</span>
+											{% else %}
+												<span class="badge bg-warning p-1">En cours</span>
+											{% endif %}
+										</td>
+										<td class="align-middle">
+											<form action="{{ path('admin_reparation_supp', {'id': reparation.id}) }}" method="post" onsubmit="return confirm('Confirmer la suppression du reparation ?');" class="d-inline">
+												<input type="hidden" name="_token" value="{{ csrf_token('SUP' ~ reparation.id) }}">
+												<button type="submit" class="btn btn-danger">
+													<i class="fa-regular fa-trash-can"></i>
+												</button>
+											</form>
+											<a href="{{path('admin_reparation_modif',{'id':reparation.id})}}" class="btn btn-warning">
+												<i class="fa-regular fa-pen-to-square"></i>
+											</a>
+
+											<a href="{{path('admin_voir_reparation',{'matricule':reparation.matricule,'id':reparation.id})}}" class="btn btn-info">
+												<i class="fa-solid fa-eye"></i>
+											</a>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+
+					<div class="navigation">
+						{{ knp_pagination_render(reparations) }}
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

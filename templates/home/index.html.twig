@@ -1,0 +1,446 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Page d'accueil | Electro-Multifix
+{% endblock %}
+
+{% block body %}
+
+	<div class="container my-3 d-block d-lg-none">
+		<form action="#" method="get">
+			<div class="row  d-flex">
+				<div class="col-8">
+					<input type="text" class="form-control" placeholder="Entrer un produit....">
+				</div>
+				<div class="col-4">
+					<button type="submit" class="btn-default">
+						<i class="fa-solid fa-magnifying-glass"></i>
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+
+	<!-- Hero Section Start -->
+	<div class="hero hero-slider bg-light">
+		<div
+			class="hero-section">
+			<!-- Hero Carousel Start -->
+			<div class="hero-carousel">
+				<div class="swiper">
+					<div
+						class="swiper-wrapper">
+						<!-- Hero Slide Start -->
+						<div class="swiper-slide">
+							<div class="hero-slide">
+								<div class="row">
+									<div class="col-md-7">
+										<div class="hero-content ">
+											<div class="section-title">
+												<h3 class="text-dark">Livraison Gratuite.</h3>
+												<h1 class="text-dark">Matériels électroniques de haute qualité</h1>
+											</div>
+											<div class="hero-content-body text-dark">
+												<p>Duis ultricies, tortor a accumsan fermentum, purus diam mollis velit, eu bibendum ipsum erat quis leo. Vestibulum finibus, leo dapibus feugiat rutrum, augue lacus rhoncus velit, vel scelerisque odio est.</p>
+											</div>
+
+											<div class="hero-content-footer text-center">
+												<a href="#" class="btn-default">Voir nos Produits</a>
+
+											</div>
+										</div>
+									</div>
+									<div class="col-md-5 d-none d-md-block">
+										<img src="{{asset('assets/images/headers/produits.jpg')}}" class=" rounded img-fluid" alt="">
+
+									</div>
+								</div>
+
+
+							</div>
+						</div>
+						<!-- Hero Slide End -->
+
+						<!-- Hero Slide Start -->
+						<div class="swiper-slide">
+							<div class="hero-slide">
+								<div class="row bg-light">
+									<div class="col-md-6">
+										<div class="hero-content text-dark">
+											<div class="section-title">
+												<h3 class="text-dark">Service de réperation.</h3>
+												<h1 class="text-dark">Confiez-nous vos appareils pour une réparation rapide.</h1>
+											</div>
+											<div class="hero-content-body text-dark">
+												<p>Duis ultricies, tortor a accumsan fermentum, purus diam mollis velit, eu bibendum ipsum erat quis leo. Vestibulum finibus, leo dapibus feugiat rutrum, augue lacus rhoncus velit, vel scelerisque odio est.</p>
+											</div>
+
+											<div class="hero-content-footer text-center ">
+												<a href="{{path('service')}}" class="btn-default">Voir nos services</a>
+
+											</div>
+										</div>
+									</div>
+
+									<div class="col-md-6 d-none d-md-block">
+										<img src="{{asset('assets/images/headers/reparation.jpg')}}" class=" rounded img-fluid " alt="">
+									</div>
+
+								</div>
+
+
+							</div>
+						</div>
+						<!-- Hero Slide End -->
+					</div>
+
+					<div class="hero-button-prev"></div>
+					<div class="hero-button-next"></div>
+				</div>
+			</div>
+			<!-- Hero Carousel End -->
+		</div>
+
+
+	</div>
+	<!-- Hero Section End -->
+
+	<!-- About Section Start -->
+	<div class="about-us">
+		<div class="container">
+			<div class="row align-items-center">
+				<div
+					class="col-lg-6">
+					<!-- About Left Image Start -->
+					<div class="about-images">
+						<div class="about-video">
+							<figure class="reveal image-anime">
+								<img src="{{asset('assets/images/12.jpg')}}" alt="">
+							</figure>
+						</div>
+
+						<div class="about-image">
+							<figure class="reveal image-anime">
+								<img src="{{asset('assets/images/13.avif')}}" alt="">
+							</figure>
+						</div>
+					</div>
+					<!-- About Left Image End -->
+				</div>
+				<div
+					class="col-lg-6">
+					<!-- About Content Start -->
+					<div
+						class="about-content">
+						<!-- Section Title Start -->
+						<div class="section-title">
+							<h3 class="wow fadeInUp">A propos d'Electro-Multifix</h3>
+							<h2 class="text-anime">Achat et services de reparation.</h2>
+						</div>
+						<!-- Section Title End -->
+
+						<!-- About Content Body Start -->
+						<div class="about-content-body">
+							<p class="wow fadeInUp" data-wow-delay="0.5s">
+								Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae aliquam optio odio tenetur velit consectetur.
+							</p>
+
+							<ul>
+								<li class="wow fadeInUp" data-wow-delay="0.75s">
+									<div class="icon-box"><img src="{{asset('assets/images/icon-about-1.svg')}}" alt=""></div>
+									<span>Acheter et recevoir rapidement</span>
+								</li>
+
+								<li class="wow fadeInUp" data-wow-delay="1.5s">
+									<div class="icon-box"><img src="{{asset('assets/images/icon-about-4.svg')}}" alt=""></div>
+									<span>En repare tous vos Materiels</span>
+								</li>
+							</ul>
+
+							<a href="{{path('contact')}}" class="btn-default wow fadeInUp" data-wow-delay="1.75s">Contactez-nous</a>
+						</div>
+						<!-- About Content Body End -->
+
+					</div>
+					<!-- About Content End -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- About Section End -->
+
+
+	<!-- Featured Property Section Start -->
+	<div class="featured-property">
+		<div class="container">
+			<div class="row">
+				<div
+					class="col-md-12">
+					<!-- Section Title Start -->
+					<div class="section-title">
+						<h3 class="wow fadeInUp">Nos produits</h3>
+						<h2 class="text-anime">Les derniers produits</h2>
+					</div>
+					<!-- Section Title End -->
+				</div>
+			</div>
+
+			<div class="row">
+				<div
+					class="col-md-12">
+					<!-- Property Slider Start -->
+					<div class="property-slider">
+						<div class="swiper">
+							<div class="swiper-wrapper">
+								{% if dernierProduits|length == 0 %}
+									<p class="text-center alert alert-info">Aucun produit disponible pour le moment.</p>
+								{% else %}
+									{% for produit in dernierProduits %}
+										<div
+											class="swiper-slide">
+											<!-- Property Item Start -->
+											<div
+												class="property-item border border-primary">
+												<!-- Property Item Header Start -->
+												<div class="property-header">
+													<figure class="image-anime">
+														<img src="{{asset('assets/images/produits/'~ produit.image)}}" class="img-fluid" alt="{{produit.titre}}">
+													</figure>
+
+													<span class="property-label">Nouveau</span>
+												</div>
+												<!-- Property Item Header End -->
+
+												<!-- Property Item Body Start -->
+												<div class="property-body">
+													<a href="{{path('voir_produit',{'id':produit.id,'slug':produit.slug})}}">
+														<h3>{{produit.titre}}</h3>
+													</a>
+													<p class="badge bg-secondary">{{ produit.categorie ? produit.categorie.categorie : 'Non spécifiée' }}</p>
+
+												</div>
+												<!-- Property Item Body End -->
+
+												<!-- Property Item Footer Start -->
+												<div class="property-footer">
+													<p class="property-price">{{ produit.prix |number_format(0, '', ' ') }}
+														FDJ</p>
+													<a href="{{ path('cart_add', { id: produit.id }) }}" class="btn-default">
+														<i class="fa-solid fa-cart-plus"></i>
+														Ajouter au panier
+													</a>
+												</div>
+												<!-- Property Item Footer Start -->
+											</div>
+											<!-- Property Item End -->
+										</div>
+									{% endfor %}
+								{% endif %}
+							</div>
+
+							<div class="swiper-pagination"></div>
+						</div>
+					</div>
+					<!-- Property Slider End -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Featured Property Section End -->
+
+	<!-- Property Type Section Start -->
+	<div class="property-types">
+		<div class="container">
+			<div
+				class="row">
+				<!-- Section Title Start -->
+				<div class="section-title">
+					<h3 class="wow fadeInUp">Nos Support et Paiement</h3>
+					<h2 class="text-anime">Nous somme proche de vous</h2>
+				</div>
+				<!-- Section Title End -->
+				<div class=" col-12 col-md-3">
+					<div class="property-type-item mt-2">
+						<div class="mb-2">
+							<img src="{{asset('assets/images/livraison.png')}}" class="img-fluid" width="60px" alt="">
+						</div>
+
+						<h3>Livraison gratuits</h3>
+						<p>En vous livre jusqu'à chez vous.</p>
+					</div>
+				</div>
+
+				<div class="col-12 col-md-3">
+					<div class="property-type-item mt-2">
+						<div class="mb-2">
+							<img src="{{asset('assets/images/support.png')}}" class="img-fluid" width="60px" alt="">
+						</div>
+						<h3>Support 24/7</h3>
+						<p>Contact-nous à tous moments.</p>
+					</div>
+				</div>
+
+				<div class="col-12 col-md-3">
+					<div class="property-type-item mt-2">
+						<div class="mb-2">
+							<img src="{{asset('assets/images/paiement.png')}}" class="img-fluid" width="60px" alt="">
+						</div>
+
+						<h3>Paiement</h3>
+						<p>Payé par Waafi ou D-money.</p>
+					</div>
+				</div>
+
+				<div class="col-12 col-md-3">
+					<div class="property-type-item mt-2">
+						<div class="mb-2">
+							<img src="{{asset('assets/images/garantie.png')}}" class="img-fluid" width="60px" alt="">
+						</div>
+
+						<h3>Garantie</h3>
+						<p>Satisfait ou remboursé.</p>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- Property Type Section End -->
+
+	<!-- How It Work Section Start -->
+	<div class="how-it-works">
+		<div class="container">
+			<div class="row">
+				<div
+					class="col-md-12">
+					<!-- Section Title Start -->
+					<div class="section-title">
+						<h3 class="wow fadeInUp">Services</h3>
+						<h2 class="text-anime">Nos differents services de Réparation.</h2>
+					</div>
+					<!-- Section Title End -->
+				</div>
+			</div>
+
+			<div class="row">
+				{% if premiersServices|length == 0 %}
+					<p class="text-center">Aucun service disponible pour le moment.</p>
+				{% else %}
+					{% for service in premiersServices %}
+						<div
+							class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+							<!-- Property Item Start -->
+							<div
+								class="property-item border border-dark p-2">
+								<!-- Property Item Header Start -->
+								<div class="property-header">
+									<img src="{{asset('assets/images/services/'~ service.image)}}" class="img-fluid rounded" alt="{{service.titre}}">
+								</div>
+								<!-- Property Item Header End -->
+
+								<!-- Property Item Body Start -->
+								<div class="property-body">
+									<h3>{{service.titre}}</h3>
+									<p>
+										{{service.description}}
+									</p>
+								</div>
+
+							</div>
+
+						</div>
+					{% endfor %}
+				{% endif %}
+			</div>
+
+			<div class="text-center mt-5">
+				<a href="{{path('service')}}" class="btn-default wow fadeInUp text-center" data-wow-delay="1.75s">
+					<i class="fa-solid fa-eye"></i>
+					Voir tous nos services
+				</a>
+			</div>
+		</div>
+	</div>
+	<!-- How It Work Section End -->
+
+
+	<!-- Latest Posts Section Start -->
+	<div class="latest-posts">
+		<div class="container">
+			<div class="row">
+				<div
+					class="col-md-12">
+					<!-- Section Title Start -->
+					<div class="section-title">
+						<h3 class="wow fadeInUp">Actualités</h3>
+						<h2 class="text-anime">Nos derniers articles</h2>
+					</div>
+					<!-- Section Title End -->
+				</div>
+			</div>
+
+			<div class="row">
+
+				{% if latestActualiters is empty %}
+
+					<div class="alert alert-info">
+						<p>Aucun actualiter trouvées</p>
+					</div>
+				{% else %}
+					{% for actualiter in latestActualiters %}
+						<div
+							class="col-lg-4">
+							<!-- Post Item Start -->
+							<div
+								class="post-item wow fadeInUp" data-wow-delay="0.25s">
+								<!-- Post Featured Image Start -->
+								<div class="post-featured-image">
+									<figure>
+										<a href="#"><img src="{{asset('assets/images/actualiter/'~ actualiter.image)}}" alt="{{actualiter.titre}}"></a>
+									</figure>
+
+									<div class="post-read-more">
+										<a href="#" class="btn-default">Lire la suite</a>
+									</div>
+								</div>
+								<!-- Post Featured Image End -->
+
+								<!-- Post Body Start -->
+								<div class="post-body">
+									<div class="post-category">
+										<ul class="d-flex justify-content-between mx-2">
+											<li>
+												<a href="#">{{actualiter.categorie}}</a>
+											</li>
+											<li>
+												<a href="">Publié le :{{actualiter.createdAt| date('d/m/Y')}}</a>
+											</li>
+										</ul>
+									</div>
+
+									<h3>
+										<a href="#">{{ actualiter.titre|slice(0, 50) ~ '...'  }}</a>
+									</h3>
+
+									<p>{{ actualiter.description|slice(0, 50) ~ '...' }}</p>
+								</div>
+								<!-- Post Body End -->
+							</div>
+							<!-- Post Item End -->
+						</div>
+					{% endfor %}
+
+				{% endif %}
+
+
+			</div>
+			<div class="my-5 text-center">
+				<a href="">Voir tous les actualités.</a>
+			</div>
+		</div>
+	</div>
+	<!-- Latest Posts Section End -->
+
+
+{% endblock %}

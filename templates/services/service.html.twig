@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Nos services | Electro-Multifix
+{% endblock %}
+
+{% block body %}
+
+	<!-- Page Header Section Start -->
+	<div class="page-header parallaxie">
+		<div class="container">
+			<div class="row">
+				<div
+					class="col-md-12">
+					<!-- Subpage Header Box Start -->
+					<div class="page-header-box">
+						<h1 class="text-anime">Nos services</h1>
+						<p>Tous nos service sont sous garantie.</p>
+						<a href="{{path('demande_service')}}" class="btn-default border border-danger">Demander une reparation</a>
+					</div>
+					<!-- Subpage Header Box End -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Page Header Section End -->
+
+
+	<div
+		class="container mt-5">
+		<!-- Section Title Start -->
+		<div class="section-title">
+			<h2 class="text-anime">Retrouvez tous nos services</h2>
+		</div>
+		<!-- Section Title End -->
+
+		<div class="row mb-5">
+			{% if services is empty %}
+				<div class="alert alert-info">Aucune services disponible</div>
+			{% else %}
+				{% for service in services %}
+					<div
+						class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3">
+						<!-- Property Item Start -->
+						<div
+							class="property-item border border-dark p-2">
+							<!-- Property Item Header Start -->
+							<div class="property-header">
+								<img src="{{asset('assets/images/services/'~ service.image)}}" class="img-fluid rounded" alt="{{service.titre}}">
+							</div>
+							<!-- Property Item Header End -->
+
+							<!-- Property Item Body Start -->
+							<div class="property-body">
+								<h3>{{service.titre}}</h3>
+								<p>
+									{{service.description}}
+								</p>
+							</div>
+
+						</div>
+
+					</div>
+				{% endfor %}
+			{% endif %}
+
+		</div>
+
+		<!-- Pagination -->
+		<div class="d-flex justify-content-center">
+			{{ knp_pagination_render(services) }}
+		</div>
+
+	</div>
+
+
+{% endblock %}

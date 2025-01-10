@@ -1,0 +1,244 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Détails du produits | Electro-multifix
+{% endblock %}
+
+{% block body %}
+
+	<!-- Page Header Section Start -->
+	<div class="page-header parallaxie">
+		<div class="container">
+			<div class="row">
+				<div
+					class="col-md-12">
+					<!-- Subpage Header Box Start -->
+					<div class="page-header-box">
+						<h1 class="text-anime">Details du produits</h1>
+						<p>{{produit.titre}}</p>
+					</div>
+					<!-- Subpage Header Box End -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Page Header Section End -->
+
+
+	<!-- Property Sinlge Page Start -->
+	<div class="page-property-single">
+		<div class="container">
+			<div class="row">
+				{% for type, messages in app.flashes %}
+					{% for message in messages %}
+						<div class="alert alert-{{ type }} alert-dismissible mb-3 fade show" role="alert">
+							{{ message }}
+						</div>
+					{% endfor %}
+				{% endfor %}
+				<div
+					class="col-lg-6">
+					<!-- Property Single Content Start -->
+					<div
+						class="property-single-content">
+						<!-- Property Photos Slider Start -->
+						<div class="property-photos-slider wow fadeInUp" data-wow-delay="0.25s">
+							<div class="swiper">
+								<div
+									class="swiper-wrapper">
+									<!-- Property Photo Slide Start -->
+									<div class="swiper-slide">
+										<div class="property-photo-item">
+											<figure class="image-anime text-center">
+												<img src="{{asset('assets/images/produits/'~ produit.image)}}" alt="{{produit.titre}}">
+											</figure>
+										</div>
+									</div>
+									<!-- Property Photo Slide End -->
+								</div>
+
+
+							</div>
+						</div>
+						<!-- Property Photos Slider End -->
+
+
+					</div>
+					<!-- Property Single Content End -->
+				</div>
+
+
+				<div
+					class="col-lg-6">
+					<!-- Property Single Sidebar Start -->
+					<div
+						class="porperty-single-sidebar">
+						<!-- Property Information Box Start -->
+						<div class="property-info-box wow fadeInUp" data-wow-delay="0.25s">
+
+							<div class="property-single-subtitle">
+								<h3>{{produit.titre}}</h3>
+							</div>
+
+
+							<div class="property-info-lists">
+								<div class="property-info-item">
+									<strong>Categorie :</strong>
+									<span class="badge bg-secondary">{{produit.categorie.categorie}}</span>
+								</div>
+								<!-- Property Info item Start-->
+								<div class="property-info-item">
+
+									<p>
+										<strong>Quantité disponible :</strong>
+										{% if produit.quantiter == 0 %}
+											<span class="text-danger bold">Produit fini</span>
+										{% else %}
+											{{produit.quantiter}}
+										{% endif %}
+									</p>
+								</div>
+								<!-- Property Info item End-->
+
+
+								<!-- Property Info item Start-->
+								<div class="property-info-item">
+									<p>
+										<strong>Prix du produit :</strong>
+										{{ produit.prix |number_format(0, '', ' ') }}
+										FDJ
+									</p>
+								</div>
+								<!-- Property Info item End-->
+
+
+								<!-- Property Info item Start-->
+								<div class="property-info-item">
+									<p>
+										<strong>Livraison :</strong>
+										Gratuite
+									</p>
+								</div>
+								<!-- Property Info item End-->
+
+
+								{% if produit.produitSupp %}
+									<div class="text-center">
+										<a href="{{ path('cart_add', { id: produit.id }) }}" class="btn-default my-2">
+											<i class="fa-solid fa-cart-plus"></i>
+											Ajouter au panier
+										</a>
+									</div>
+								{% endif %}
+							</div>
+						</div>
+						<!-- Property Information Box End -->
+
+
+					</div>
+					<!-- Property Single Sidebar End -->
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div
+					class="col-12 col-md-6">
+					<!-- About Property Start -->
+					<div class="about-property wow fadeInUp" data-wow-delay="0.75s">
+						<div class="property-single-subtitle">
+							<h3>Description du produit</h3>
+						</div>
+
+						<div class="about-property-content">
+							<p>{{produit.description}}</p>
+						</div>
+					</div>
+					<!-- About Property End -->
+				</div>
+
+
+				<div
+					class="col-12 col-md-6">
+					<!-- Property Inquiry Form Start -->
+					<div class="property-inquiry-box wow fadeInUp mt-5 mb-2" data-wow-delay="0.5s">
+						<h3>Comment acheter cette article ?</h3>
+
+						<div class="property-inquiry-form">
+							hvhgvhgvgh
+						</div>
+					</div>
+					<!-- Property Inquiry Form End -->
+				</div>
+
+			</div>
+
+
+			<!-- Property Amenities Start -->
+			<div class="property-amenities wow fadeInUp" data-wow-delay="1s">
+				<div class="property-single-subtitle">
+					<h3>Produits similaire</h3>
+				</div>
+
+				<!-- Property Slider Start -->
+				<div class="property-slider">
+					<div class="swiper">
+						<div class="swiper-wrapper">
+							{% if  relatedProducts|length == 0 %}
+								<p class="text-center alert alert-info">Aucun produit similaire trouvé.</p>
+							{% else %}
+								{% for related in relatedProducts %}
+									<div
+										class="swiper-slide">
+										<!-- Property Item Start -->
+										<div
+											class="property-item border border-primary">
+											<!-- Property Item Header Start -->
+											<div class="property-header">
+												<figure class="image-anime">
+													<img src="{{asset('assets/images/produits/'~ related.image)}}" class="img-fluid" alt="{{related.titre}}">
+												</figure>
+
+												<span class="property-label">Nouveau</span>
+											</div>
+											<!-- Property Item Header End -->
+
+											<!-- Property Item Body Start -->
+											<div class="property-body">
+												<a href="{{path('voir_produit',{'id':related.id,'slug':related.slug})}}">
+													<h3>{{related.titre}}</h3>
+												</a>
+												<p class="badge bg-secondary">{{ related.categorie ? related.categorie.categorie : 'Non spécifiée' }}</p>
+
+											</div>
+											<!-- Property Item Body End -->
+
+											<!-- Property Item Footer Start -->
+											<div class="property-footer">
+												<p class="property-price">{{ related.prix |number_format(0, '', ' ') }}
+													FDJ</p>
+												<a href="{{ path('cart_add', { id: related.id }) }}" class="btn-default">
+													<i class="fa-solid fa-cart-plus"></i>
+													Ajouter au panier
+												</a>
+											</div>
+											<!-- Property Item Footer Start -->
+										</div>
+										<!-- Property Item End -->
+									</div>
+								{% endfor %}
+							{% endif %}
+						</div>
+
+						<div class="swiper-pagination"></div>
+					</div>
+				</div>
+				<!-- Property Slider End -->
+
+				<div class="property-amenities-box"></div>
+			</div>
+			<!-- Property Amenities End -->
+		</div>
+	</div>
+	<!-- Property Sinlge Page End -->
+{% endblock %}

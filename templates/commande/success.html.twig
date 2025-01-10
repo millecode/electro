@@ -1,0 +1,190 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Détails de la Commande | Electro-Mutltifix
+{% endblock %}
+
+{% block body %}
+	{% include 'admin/_menu.html.twig' %}
+
+	<div class="my-3 text-center">
+		<h2>Détails de la commande</h2>
+	</div>
+
+
+	<div class="container my-5">
+		{% for type, messages in app.flashes %}
+			{% for message in messages %}
+				<div class="alert alert-{{ type }} alert-dismissible my-2 fade show" role="alert">
+					{{ message }}
+
+				</div>
+			{% endfor %}
+		{% endfor %}
+		<div class="row">
+			{% if commande.status or (app.user.roles == 'ROLE_ADMIN' or app.user.roles == 'ROLE_EMPLOYER') %}
+				<div class="my-2">
+					<a href="{{path('generate_pdf',{'matricule':commande.matricule,'id':commande.id})}}" class="btn btn-secondary">Imprimer la Facture</a>
+				</div>
+			{% else %}
+				<div class="my-2">
+					<p class="text-danger">Votre commande est cours de traitements. vous pouvez annuler la commande avant qu'elle passe à terminer.
+						<form action="{{path('commande_delete',{'id':commande.id})}}" method="post" style="display:inline;">
+							<button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir Annuler cette commande ?')">
+								Annuler la commande
+							</button>
+						</form>
+					</p>
+				</a>
+			</p>
+		</div>
+	{% endif %}
+	<!-- Partie 1 : Détails de la commande -->
+	<div class="col-md-6 mb-4">
+		<div class="card p-2">
+
+			<h3 class="text-center">Détails de la Commande</h3>
+
+			<div class="card-body">
+				<ul class="list-group">
+					<li class="list-group-item">
+						<strong>Numéros de la commande:</strong>
+						{{ commande.matricule }}</li>
+					<li class="list-group-item">
+						<strong>Date de la commande:</strong>
+						{{ commande.createdAt|date('d-m-Y') }}</li>
+
+					<li class="list-group-item">
+						<strong>Méthode de paiement:</strong>
+						{{ commande.methodePaiement.type }}
+						-
+						{{commande.methodePaiement.phone}}
+					</li>
+					<li class="list-group-item">
+						<strong>Status de la commande :</strong>
+						{% if commande.status %}
+							<span class="badge bg-success">Commande terminée</span>
+						{% else %}
+							<span class="badge bg-info">En cours de traitement</span>
+						{% endif %}
+					</li>
+
+					<li class="list-group-item">
+						<strong>Prix Total:</strong>
+						{{ commande.prixtotal | number_format(0, '', ' ') }}
+						DJF
+					</li>
+				</ul>
+			</div>
+
+
+			{% if app.user.fonction == 'ROLE_ADMIN' or app.user.fonction == 'ROLE_EMPLOYER' %}
+				<div class="row mt-4 p-2">
+					<div class="col-md-12">
+						<h4 class="text-center">Informations de l'utilisateur qui a passé la commande</h4>
+						<p>
+							<strong>Nom :</strong>
+							{{ userCommande.nom }}</p>
+						<p>
+							<strong>Email :</strong>
+							{{ userCommande.email }}</p>
+						<p>
+							<strong>Numéro de téléphone :</strong>
+							{{ userCommande.phone }}</p>
+						<p class="text-center">
+							<a href="{{path('admin_voir_user',{'matricule':userCommande.matricule,'id':userCommande.id})}}" class="btn btn-success">Voir le details de l'utilisateur</a>
+						</p>
+					</div>
+				</div>
+				<div class="row mt-4">
+					<div class="col-md-12">
+						<h4>Changer le statut de la commande :</h4>
+						<form id="updateStatusForm" action="{{ path('update_commande_status', {'id': commande.id}) }}" method="POST">
+							<div class="form-group">
+								<label for="status">Statut de la commande</label>
+								<select name="status" id="status" class="form-control border border-dark">
+									<option value="0" {% if commande.status == 0 %} selected {% endif %}>En cours de traitement</option>
+									<option value="1" {% if commande.status == 1 %} selected {% endif %}>Commande Terminée</option>
+								</select>
+							</div>
+							<button type="submit" class="btn btn-primary mt-3">Mettre à jour</button>
+						</form>
+					</div>
+				</div>
+
+				<div id="flash-message" class="mt-3"></div>
+			{% endif %}
+
+
+		</div>
+	</div>
+
+	<!-- Partie 2 : Liste des produits commandés -->
+	<div class="col-md-6">
+		<div class="card p-2">
+
+			<h3 class="text-center">Produits de la Commande</h3>
+			<div class="mt-3">
+				<p>
+					<strong>{{ produitsDistincts }}
+						produits commandés
+					</strong>
+				</p>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					{% for item in commandeProduits %}
+						<div class="col-md-6 mb-4">
+							<div class="card">
+								<img src="{{ asset('assets/images/produits/'~ item.produit.image) }}" width="100" class="card-img-top" alt="{{ item.produit.titre }}">
+								<div class="card-body">
+									<h5 class="card-title">
+										<a href="{{path('voir_produit',{'id':item.produit.id,'slug':item.produit.slug})}}">
+											{{ item.produit.titre }}
+										</a>
+									</h5>
+									<p class="card-text">Prix Unitaire:
+										{{ item.produit.prix | number_format(0, '', ' ') }}
+										DJF</p>
+									<p class="card-text">Quantité commandée:
+										{{ item.quantity }}</p>
+									<p class="card-text">
+										<strong>Total produit:
+											{{ (item.quantity * item.produit.prix) | number_format(0, '', ' ') }}
+											DJF</strong>
+									</p>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div></div><script>
+document.getElementById("updateStatusForm").addEventListener("submit", function (event) {
+event.preventDefault();
+// Empêcher l'envoi du formulaire par défaut
+
+// Récupérer la valeur du statut
+var status = document.getElementById("status").value;
+
+// Faire une requête AJAX pour mettre à jour le statut
+fetch("{{ path('update_commande_status', {'id': commande.id}) }}", {
+method: "POST",
+headers: {
+"Content-Type": "application/x-www-form-urlencoded"
+},
+body: new URLSearchParams(
+{'status': status}
+)
+}).then(response => response.json()).then(data => { // Afficher le message flash
+const flashMessage = document.getElementById("flash-message");
+flashMessage.innerHTML = `<div class="alert alert-success">${
+data.message
+}</div>`;
+}).catch(error => {
+const flashMessage = document.getElementById("flash-message");
+flashMessage.innerHTML = `<div class="alert alert-danger">Une erreur est survenue lors de la mise à jour du statut.</div>`;
+});
+});</script>{% endblock %}

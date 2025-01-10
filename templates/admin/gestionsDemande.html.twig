@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Gestions des demandes de service | Eléctro-Multifix
+{% endblock %}
+
+{% block body %}
+
+	{% include 'admin/_menu.html.twig' %}
+
+
+	<div class="my-3 text-center">
+		<h2>Listes des demandes de service</h2>
+	</div>
+
+
+	<div class="container">
+		<div class="row my-5">
+			{% for type, messages in app.flashes %}
+				{% for message in messages %}
+					<div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+						{{ message }}
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				{% endfor %}
+			{% endfor %}
+
+			<!-- Formulaire de recherche -->
+			<form method="get" action="{{ path('admin_demande') }}" class="mb-4">
+				<div class="row g-3 d-flex justify-content-center align-items-center">
+					<div class="col-md-4">
+						<input type="text" name="search" value="{{ search }}" class="form-control" placeholder="Rechercher par nom ou téléphone">
+					</div>
+					<div class="col-md-4">
+						<select name="service" class="form-select form-control">
+							<option value="">Tous les services</option>
+							{% for service in services %}
+								<option value="{{ service.id }}" {% if serviceId == service.id %} selected {% endif %}>
+									{{ service.titre }}
+								</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="col-md-2">
+						<button type="submit" class="btn btn-primary form-control">Rechercher</button>
+					</div>
+				</div>
+			</form>
+			{% if demandes is empty %}
+				<div class="alert alert-info">
+					<p>Aucun demande trouver</p>
+				</div>
+			{% else %}
+				<div class="table-responsive my-3 ">
+					<table class="table table-striped text-center table-bordered">
+						<thead>
+							<tr>
+								<th>Nom</th>
+								<th>Email</th>
+								<th>Téléphone</th>
+								<th>Service</th>
+								<th>Date</th>
+								<th>Status</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for demande in demandes %}
+								<tr>
+									<td>{{ demande.nom }}</td>
+									<td>{{ demande.email }}</td>
+									<td>{{ demande.phone }}</td>
+									<td>{{ demande.service.titre }}</td>
+									<td>{{ demande.date|date('d/m/Y') }}</td>
+									<td>{{ demande.status ? 'Confirmé' : 'non-confirmer' }}</td>
+									<td>
+										<a href="{{ path('admin_demande_voir', {'matricule':demande.matricule, 'id': demande.id}) }}" class="btn btn-sm btn-info">Voir</a>
+
+										<form action="{{ path('admin_demande_supp', {'id': demande.id}) }}" method="post" onsubmit="return confirm('Confirmer la suppression du demande de service ?');" class="d-inline">
+											<input type="hidden" name="_token" value="{{ csrf_token('SUP' ~ demande.id) }}">
+											<button type="submit" class="btn btn-danger">
+												<i class="fa-regular fa-trash-can"></i>
+											</button>
+										</form>
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+
+
+				</div>
+			{% endif %}
+			<div class="navigation">
+				{{ knp_pagination_render(demandes) }}
+			</div>
+		</div>
+	</div>
+
+
+{% endblock %}

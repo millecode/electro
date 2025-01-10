@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Détails de la Demande
+{% endblock %}
+
+{% block body %}
+	{% include 'admin/_menu.html.twig' %}
+
+	<div class="container mt-5">
+		<h1 class="text-center mb-4">Détails de la Demande</h1>
+
+		<div class="row">
+			<div class="col-12 col-md-6">
+				<div class="card shadow-lg mb-4">
+					<div class="card-header bg-primary text-white">
+						<h4 class="card-title mb-0">Informations de la Demande</h4>
+					</div>
+					<div class="card-body">
+						<div class="row">
+
+							<p>
+								<strong>Nom du client :</strong>
+								{{ demande.nom }}
+							</p>
+
+							<p>
+								<strong>Service demandé :</strong>
+								{{ demande.service.titre }}
+							</p>
+
+							<p>
+								<strong>Email :</strong>
+								{{ demande.email }}
+							</p>
+							<p>
+								<strong>Téléphone :</strong>
+								{{ demande.phone }}
+							</p>
+							<p>
+								<strong>Status Email :</strong>
+								{% if demande.status  %}
+									<span class="badge bg-success p-1">Confirmer</span>
+								{% else %}
+									<span class="badge bg-warning p-1">Non-confirmer</span>
+								{% endif %}
+
+							</p>
+							<p>
+								<strong>Date de la demande :</strong>
+								{{ demande.date|date('d/m/Y') }}
+							</p>
+
+						</div>
+					</div>
+				</div>
+
+				<div class="card my-2 shadow-lg ">
+					<div class="card-body">
+						<p>
+							<strong>Description :</strong>
+						</p>
+						<p>{{ demande.description }}</p>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="col-12 col-md-6">
+				<div class="card shadow-lg mb-4">
+					<div class="card-header bg-secondary text-white">
+						<h4 class="card-title mb-0">Détails supplémentaires</h4>
+					</div>
+					<div class="card-body">
+
+
+						{% if demande.image %}
+							<p>
+								<strong>Image :</strong>
+							</p>
+							<div class="text-center">
+								<img src="{{ asset('assets/images/reparations/' ~ demande.image) }}" alt="Image associée à la demande" class="img-fluid rounded border" style="max-height: 400px; cursor: pointer;" onclick="openImageModal(this.src)">
+								<br>
+								<!-- Bouton pour télécharger l'image -->
+								<a href="{{ asset('assets/images/reparations/' ~ demande.image) }}" class="btn btn-success btn-sm my-3" download="{{ demande.image }}">
+									Télécharger l'image
+								</a>
+							</div>
+						{% else %}
+							<p>Aucune image fournie.</p>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+
+
+		<div class="d-flex justify-content-between">
+			<a href="{{ path('admin_demande') }}" class="btn btn-secondary mx-1 mt-3 mb-5">
+				Retour à la gestion des demandes
+			</a>
+
+
+			<form action="{{ path('admin_ajouter_demande_reparation', { id: demande.id }) }}" method="post" onsubmit="return confirm('Confirmer que vous ajouter cette demande dans Réparation ?');" class="d-inline">
+				<input type="hidden" name="_token" value="{{ csrf_token('SUP' ~ demande.id) }}">
+				<button type="submit" class="btn btn-warning mx-1 mt-3 mb-5">
+					Enregistrer cette demande pour réparation
+				</button>
+			</form>
+		</div>
+	</div>
+
+	<!-- Modal pour agrandir l'image -->
+	<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-lg">
+			<div class="modal-content">
+				<div class="modal-body p-0">
+					<img id="modalImage" src="" class="img-fluid w-100">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		function openImageModal(src) {
+const modalImage = document.getElementById('modalImage');
+modalImage.src = src;
+const imageModal = new bootstrap.Modal(document.getElementById('imageModal'));
+imageModal.show();
+}
+	</script>
+
+{% endblock %}

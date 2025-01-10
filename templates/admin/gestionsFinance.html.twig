@@ -1,0 +1,130 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Gestions des Finances | Electro-Multifix
+{% endblock %}
+
+{% block body %}
+
+	{% include 'admin/_menu.html.twig' %}
+
+
+	<div class="my-3 text-center">
+		<h2>Gestions de Finance</h2>
+	</div>
+
+
+	<div
+		class="container mt-4">
+
+		<!-- Statistiques -->
+		<div class="row">
+			<div class="col-md-6">
+				<div class="card text-white bg-primary mb-3">
+					<div class="card-header">Prix Total de
+						{{ nombre_produits + nombre_reparations  }}
+						commandes Produits et Réparations
+					</div>
+					<div class="card-body">
+						<h5 class="card-title">Revenu Total :</h5>
+						<p class="card-text">{{ prix_total | number_format(0, ',', ' ') }}
+							DJF</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="card text-white bg-success mb-3">
+					<div class="card-header">Prix Produit</div>
+					<div class="card-body">
+						<h5 class="card-title">
+							Total des Produits :
+							{{ nombre_produits }}
+						</h5>
+						<p class="card-text">{{ prix_produit | number_format(0, ',', ' ') }}
+							DJF</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="card text-white bg-warning mb-3">
+					<div class="card-header">Prix Réparation</div>
+					<div class="card-body">
+						<h5 class="card-title">
+							Total des Réparations :
+							{{ nombre_reparations }}
+						</h5>
+						<p class="card-text">{{ prix_reparation | number_format(0, ',', ' ') }}
+							DJF</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Formulaire de recherche -->
+		<form method="get" class="mb-4 ">
+			<div class="row mt-2 d-flex justify-content-center">
+				<div class="col-md-4">
+					<select id="type" name="type" class="form-select form-control border border-dark">
+						<option value="">Tous</option>
+						<option value="Produit" {% if app.request.get('type') == 'Produit' %} selected {% endif %}>Produit</option>
+						<option value="Reparation" {% if app.request.get('type') == 'Reparation' %} selected {% endif %}>Réparation</option>
+					</select>
+				</div>
+				<div class="col-md-4">
+					<input type="text" id="numero" name="numero" value="{{ app.request.get('numero') }}" class="form-control border border-dark" placeholder="Rechercher par numéro">
+				</div>
+				<div class="col-md-4 align-self-end">
+					<button type="submit" class="btn btn-info form-control border border-dark">Rechercher</button>
+				</div>
+			</div>
+		</form>
+
+		<!-- Liste des finances -->
+		<div class="table-reponsive">
+			{% if finances is empty %}
+				<div class="alert alert-info">
+					<p class="text-center">Aucune donnée trouvée</p>
+				</div>
+			{% else %}
+				<table class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Type</th>
+							<th>Numéro</th>
+							<th>Nom</th>
+							<th>Phone</th>
+							<th>Prix</th>
+							<th>Date de création</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for finance in finances %}
+							<tr>
+								<td class="text-center align-items-center">{{ finance.id }}</td>
+								<td class="text-center align-items-center">{{ finance.type }}</td>
+								<td class="text-center align-items-center">{{ finance.numero }}</td>
+								<td class="text-center align-items-center">{{ finance.nom }}</td>
+								<td class="text-center align-items-center">{{ finance.phone }}</td>
+								<td class="text-center align-items-center">{{ finance.prix | number_format(0, ',', ' ') }}
+									DJF</td>
+								<td class="text-center align-items-center">{{ finance.createdAt ? finance.createdAt|date('d/m/Y') : '' }}</td>
+								<td class="text-center align-items-center">
+									<a href="{{path('commande_passer',{'matricule':finance.numero,'id':finance.idCommande})}}" class="btn btn-info">
+										<i class="fas fa-eye"></i>
+									</a>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			{% endif %}
+		</div>
+
+		<!-- Pagination -->
+		<div class="pagination justify-content-center">
+			{{ knp_pagination_render(finances) }}
+		</div>
+	</div>
+{% endblock %}

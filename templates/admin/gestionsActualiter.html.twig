@@ -1,0 +1,146 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Gestions des articles | Electro-Multifix
+{% endblock %}
+
+{% block body %}
+
+	{% include 'admin/_menu.html.twig' %}
+
+
+	<div class="container my-3">
+		<div class="row">
+			<div class="col-12 col-sm-6 col-md-4 text-center mt-2">
+				<a href="{{path('admin_coordonner')}}" class="btn btn-info">Gestion des coordonnées</a>
+			</div>
+
+			<div class="col-12 col-sm-6 col-md-4 text-center mt-2">
+				<a href="{{path('admin_logos')}}" class="btn btn-primary">Gestions des logos</a>
+			</div>
+
+			<div class="col-12 col-sm-6 col-md-4 text-center mt-2">
+				<a href="{{path('admin_finance')}}" class="btn btn-dark">Gestions de Finance</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="my-3 text-center">
+		<h2>Gestions des articles</h2>
+	</div>
+
+
+	<div class="container">
+		<div class="row my-5">
+
+			<div class="col-12 col-md-4">
+				{% for type, messages in app.flashes %}
+					{% for message in messages %}
+						<div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+							{{ message }}
+							<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						</div>
+					{% endfor %}
+				{% endfor %}
+				<div class="card">
+					<div class="card-header">
+						<h5 class="text-center">Enregistrer un article</h5>
+					</div>
+
+					<div class="card-body">
+						{{form_start(form)}}
+						{{form_widget(form)}}
+						<input type="submit" value="Enregistrer" class="btn btn-warning">
+						{{form_end(form)}}
+					</div>
+				</div>
+
+
+			</div>
+
+
+			<div class="col-12 col-md-8">
+				<h6 class="my-3">Liste des articles</h6>
+				{% if actualiters is empty %}
+					<div class="alert alert-info">
+						<p>Aucun artcile trouvée.</p>
+					</div>
+				{% else %}
+					<div class="table-responsive my-3">
+						<table class="table table-hover rounded">
+							<thead class="text-center table-success">
+								<tr>
+									<th>Image</th>
+									<th>Titre</th>
+									<th>Date</th>
+									<th>Status</th>
+									<th colspan="2">Action</th>
+								</tr>
+							</thead>
+
+							<tbody class="text-center">
+								{% for article in actualiters %}
+									<tr class="align-middle">
+										<td class="text-center align-middle">
+											<img src="{{asset('assets/images/actualiter/'~ article.image)}}" class="img-fluid rounded" width="60px" alt="{{article.titre}}">
+										</td>
+										<td class="text-center align-middle">
+											{{article.titre|slice(0, 15) ~ '...' }}
+										</td>
+										<td class="text-center align-middle">
+											{{article.createdAt|date('d/m/Y')}}
+										</td>
+
+
+										<td class="text-center align-middle">
+
+											<label class="form-switch">
+												<input type="checkbox" role="switch" {{(article.status) ? 'checked' : ''}} data-id="{{article.id}}">
+											</label>
+
+										</td>
+
+										<td class="text-center align-middle ">
+											<form action="{{path('admin_actualiter_supp',{'id':article.id})}}" method="post" onsubmit="return confirm('Confirmer la suppression du service ?');" class="d-inline">
+												<input type="hidden" name="_token" value="{{ csrf_token('SUP' ~ article.id) }}">
+												<button type="submit" class="btn btn-danger">
+													<i class="fa-regular fa-trash-can"></i>
+												</button>
+											</form>
+											<a href="{{path('admin_actualiter_modif',{'id':article.id})}}" class="btn btn-warning">
+												<i class="fa-regular fa-pen-to-square"></i>
+											</a>
+
+											{# <a href="{{path('admin_voir_actualiter',{'slug':article.slug,'id':article.id})}}" class="btn btn-info">
+																																																																																																																																					<i class="fa-solid fa-eye"></i>
+																																																																																																																																				</a> #}
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+					<div class="navigation">
+						{{ knp_pagination_render(actualiters) }}
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+
+	<script>
+		window.onload = () => {
+let activer = document.querySelectorAll("[type=checkbox]")
+for (let bouton of activer) {
+bouton.addEventListener("click", function () {
+let xmlhttp = new XMLHttpRequest;
+xmlhttp.open("get", `/admin/actualiter/activer/${
+this.dataset.id
+}`)
+xmlhttp.send()
+})
+}
+}
+	</script>
+{% endblock %}

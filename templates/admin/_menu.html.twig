@@ -1,0 +1,119 @@
+<div class="page-header parallaxie">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="page-header-box">
+					<h1 class="text-anime">
+						{% if app.user.fonction == "ROLE_CLIENT" %}
+							Votre espace membre
+						{% else %}
+							Administration
+						{% endif %}
+					</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<div class="container-fluid">
+
+		<a class="navbar-toggler text-center mx-3 my-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			Menu
+		</a>
+		<div class="collapse navbar-collapse border border-solide rounded p-2" id="navbarSupportedContent">
+			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+				{% if app.user.fonction == "ROLE_CLIENT" %}
+					<li class="nav-item">
+						<a class="nav-link bg-success text-light p-2 rounded mx-2 my-1" href="{{path('mes_commandes')}}">
+							<i class="fa-solid fa-house"></i>
+							Accueil
+						</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link bg-success text-light p-2 rounded mx-2 my-1" href="{{path('mes_reparations')}}">
+							<i class="fa-solid fa-house"></i>
+							Réparation
+						</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link bg-success text-light p-2 rounded mx-2 my-1" href="">
+							<i class="fa-solid fa-house"></i>
+							Messagerie
+						</a>
+					</li>
+
+				{% else %}
+
+
+					<li class="nav-item">
+						<a class="nav-link bg-success text-light p-2 rounded mx-2 my-1" href="{{path('admin')}}">
+							<i class="fa-solid fa-house"></i>
+							Administration
+						</a>
+					</li>
+					{% if app.user.fonction =="ROLE_ADMIN"%}
+
+						<li class="nav-item">
+							<a class="nav-link bg-success text-light p-2 rounded mx-2 my-1" href="{{path('admin_categorie')}}">
+								<i class="fa-solid fa-sliders"></i>
+								Gestions des Catégories
+							</a>
+						</li>
+					{% endif %}
+
+					<li class="nav-item">
+						<a class="nav-link bg-success text-light p-2 rounded mx-2 my-1" href="{{path('admin_produits')}}">
+							<i class="fa-solid fa-bars"></i>
+							Gestions des Produits
+						</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link bg-success text-light p-2 rounded mx-2 my-1" href="{{path('admin_services')}}">
+							<i class="fa-solid fa-bars"></i>
+							Gestions des Services
+						</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link bg-success text-light p-2 rounded mx-2 my-1" href="{{path('admin_contacts')}}">
+							<i class="fa-solid fa-users"></i>
+							Contacts
+						</a>
+					</li>
+
+
+					{% if app.user.fonction == "ROLE_ADMIN" %}
+						<li class="nav-item">
+							<a class="nav-link bg-success text-light p-2 rounded mx-2 my-1" href="{{path('admin_users')}}">
+								<i class="fa-solid fa-newspaper"></i>
+								Utilisateurs
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a class="nav-link bg-success text-light p-2 rounded mx-2 my-1" href="{{path('admin_actualiter')}}">
+								<i class="fa-solid fa-gear"></i>
+								Paramettre
+							</a>
+						</li>
+					{% endif %}
+				{% endif %}
+
+
+			</ul>
+
+			<div class="d-flex">
+				<a href="{{path('app_logout')}}" class="btn btn-danger">
+					<i class="fa-solid fa-right-from-bracket"></i>
+				</a>
+			</div>
+
+		</div>
+	</div>
+</nav>

@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Enregistrer une Réparation  | Eléctro-Multifix
+{% endblock %}
+
+{% block body %}
+	{% include 'admin/_menu.html.twig' %}
+
+
+	<div class="my-3 text-center">
+		<h2>Enregistrer une Réparation</h2>
+	</div>
+
+
+	<div class="container">
+		<div class="row my-5">
+			{% for type, messages in app.flashes %}
+				{% for message in messages %}
+					<div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+						{{ message }}
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				{% endfor %}
+			{% endfor %}
+			<div class="col-12">
+				<div class="card border border-dark p-2 my-5">
+
+					<div class="card-body">
+						{{form_start(form)}}
+						<div class="row">
+							<div class=" col-12 col-sm-6 mt-3">
+								{{form_row(form.email)}}
+							</div>
+
+							<div class=" col-12 col-sm-6 mt-3">
+								{{form_row(form.phone)}}
+							</div>
+
+							<div class="col-12 col-sm-6 mt-3">
+								{{form_row(form.service)}}
+							</div>
+
+
+							<div class="col-12 col-sm-6 mt-3">
+								{{form_row(form.imageFile)}}
+							</div>
+
+							<div class="col-12 col-sm-6 mt-3">
+								{{form_row(form.prix)}}
+							</div>
+
+							<div class="col-12 col-sm-6 mt-3">
+								{{form_row(form.date_repri)}}
+							</div>
+
+
+							<div class="col-12 mt-3">
+								{{form_row(form.description)}}
+							</div>
+
+
+						</div>
+						<input type="submit" value="Enregistrer" class="btn btn-success my-3">
+						{{form_end(form)}}
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+{% endblock %}

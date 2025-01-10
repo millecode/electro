@@ -1,0 +1,146 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Contactez-nous | Electro-Multifix
+{% endblock %}
+
+{% block body %}
+
+
+	<div class="page-header parallaxie">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="page-header-box">
+						<h1 class="text-anime">Contactez-nous</h1>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="contact-details">
+		<div class="container">
+			{% for type, messages in app.flashes %}
+				{% for message in messages %}
+					<div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+						{{ message }}
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				{% endfor %}
+			{% endfor %}
+			<div class="row">
+				<div class="col-md-12">
+					<div class="section-title">
+						<h3 class="wow fadeInUp">Contactez-nous</h3>
+						<h2 class="text-anime">Nos differents contacts</h2>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-4">
+					<div class="contact-detail-item wow fadeInUp" data-wow-delay="0.25s">
+						<div class="icon-box">
+							<img src="{{asset('assets/images/icon-address.svg')}}" alt="">
+						</div>
+
+						<h3>Address</h3>
+						<p>Djibouti, Djibouti ville.</p>
+					</div>
+				</div>
+
+				{% if lastActiveCoordonner %}
+					<div class="col-md-4">
+						<div class="contact-detail-item wow fadeInUp" data-wow-delay="0.5s">
+							<div class="icon-box">
+								<img src="{{asset('assets/images/icon-contactno.svg')}}" alt="">
+							</div>
+
+							<h3>Télèphone</h3>
+							<p>(+253)
+								{{ lastActiveCoordonner.phone }}</p>
+						</div>
+
+					</div>
+
+					<div class="col-md-4">
+						<div class="contact-detail-item wow fadeInUp" data-wow-delay="0.75s">
+							<div class="icon-box">
+								<img src="{{asset('assets/images/icon-email-address.svg')}}" alt="">
+							</div>
+
+							<h3>Email</h3>
+							<p>{{ lastActiveCoordonner.email }}</p>
+						</div>
+
+					</div>
+
+				{% else %}
+					<div class="alert alert-info my-3">
+						Aucun coordonnée trouvé. Contactez-nous via le formulaire.
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+
+	<div class="contact-inquiry-box mb-5">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+
+					<div class="section-title">
+						<h3 class="wow fadeInUp">Prenez contact avec nous.</h3>
+						<h2 class="text-anime">En vous repond imediatement</h2>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="contact-form wow fadeInUp" data-wow-delay="0.75s">
+						<div class="container">
+							{{form_start(form)}}
+							<div class="row">
+								<div class="col-md-6 mb-4">
+									{{form_row(form.nom)}}
+								</div>
+
+								<div class="col-md-6 mb-4">
+									{{form_row(form.email)}}
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6 mb-4">
+									{{form_row(form.phone)}}
+								</div>
+
+								<div class=" col-md-6 mb-4">
+									{{form_row(form.sujet)}}
+								</div>
+							</div>
+							<div class="row">
+								<div class=" col-md-12 mb-4">
+									{{form_row(form.message)}}
+								</div>
+							</div>
+
+							<div class="row">
+								<div class="col-md-12 text-center">
+									<input type="submit" class="btn-default" class="Envoyer">
+								</div>
+							</div>
+
+							{{form_end(form)}}
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

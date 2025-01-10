@@ -1,0 +1,151 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Gestions des Produits | Eléctro-Multifix
+{% endblock %}
+
+{% block body %}
+
+	{% include 'admin/_menu.html.twig' %}
+
+
+	<div class="my-3 text-center">
+		<h2>Gestions des Produits</h2>
+	</div>
+
+
+	<div class="container">
+		<div class="row my-5">
+			{% for type, messages in app.flashes %}
+				{% for message in messages %}
+					<div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+						{{ message }}
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				{% endfor %}
+			{% endfor %}
+
+
+			<div>
+				<a href="{{path('admin_ajouter_produit')}}" class="btn btn-primary">
+					<i class="fa-solid fa-plus"></i>
+					Ajouter un produit
+				</a>
+			</div>
+
+
+			<form method="get" action="{{ path('admin_produits') }}" class="row g-3 my-2">
+				<div class="col-md-6">
+					<input type="text" name="titre" value="{{ titre }}" class="form-control border border-dark" placeholder="Rechercher par titre">
+				</div>
+				<div class="col-md-4">
+					<select name="categorie" class="form-select form-control border border-dark">
+						<option value="">-- Toutes les catégories --</option>
+						{% for categorie in categories %}
+							<option value="{{ categorie.id }}" {% if categorie.id == categorieId %} selected {% endif %}>
+								{{ categorie.categorie }}
+							</option>
+						{% endfor %}
+					</select>
+				</div>
+				<div class="col-md-2">
+					<button type="submit" class="btn btn-success form-control border border-dark">Rechercher</button>
+				</div>
+			</form>
+			{% if produitss is empty %}
+				<div class="alert alert-info my-2">
+					<p>Aucun produit trouvée.</p>
+				</div>
+			{% else %}
+				<div class="table-responsive my-3">
+					<table class="table table-hover rounded">
+						<thead class="text-center table-success">
+							<tr>
+								<th>Matricule</th>
+								<th>Image</th>
+								<th>Titre du produit</th>
+								<th>Date</th>
+								<th>Catégorie</th>
+								<th>Prix</th>
+								<th>Quantité</th>
+								<th>Description</th>
+								{% if app.user.fonction == "ROLE_ADMIN" %}
+
+									<th>Status</th>
+								{% endif %}
+								<th colspan="3">Action</th>
+							</tr>
+						</thead>
+
+						<tbody class="text-center">
+
+							{% for produit in produitss %}
+								<tr class="align-middle">
+									<td class="text-center align-middle">{{produit.matricule}}</td>
+									<td class="text-center align-middle">
+										<img src="{{asset('assets/images/produits/'~ produit.image)}}" class="img-fluid rounded" width="60px" alt="{{produit.titre}}">
+									</td>
+									<td class="text-center align-middle">{{produit.titre|slice(0, 10) ~ '...' }}</td>
+									<td class="text-center align-middle">{{produit.date|date('d/m/Y') }}</td>
+									<td class="text-center align-middle">{{produit.categorie.categorie}}</td>
+									<td>
+										{{ produit.prix | number_format(0, '', ' ') }}
+										FDJ
+									</td>
+									<td class="text-center align-middle">{{produit.quantiter}}</td>
+									<td class="text-center align-middle">{{produit.description|slice(0, 10) ~ '...' }}</td>
+									{% if app.user.fonction == "ROLE_ADMIN" %}
+										<td class="text-center align-middle">
+
+											<label class="form-switch">
+												<input type="checkbox" role="switch" {{(produit.status) ? 'checked' : ''}} data-id="{{produit.id}}">
+											</label>
+
+										</td>
+									{% endif %}
+									<td class="text-center align-middle ">
+										<form action="{{ path('admin_supp_produit', {'id': produit.id}) }}" method="post" onsubmit="return confirm('Confirmer la suppression du produit ?');" class="d-inline">
+											<input type="hidden" name="_token" value="{{ csrf_token('SUP' ~ produit.id) }}">
+											<button type="submit" class="btn btn-danger">
+												<i class="fa-regular fa-trash-can"></i>
+											</button>
+										</form>
+										<a href="{{path('admin_modif_produit',{'id':produit.id,'slug':produit.slug})}}" class="btn btn-warning">
+											<i class="fa-regular fa-pen-to-square"></i>
+										</a>
+
+										<a href="{{path('admin_voir_produit',{'matricule':produit.matricule,'id':produit.id})}}" class="btn btn-info">
+											<i class="fa-solid fa-eye"></i>
+										</a>
+
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+				<div class="navigation">
+					{{ knp_pagination_render(produitss) }}
+				</div>
+			{% endif %}
+
+		</div>
+	</div>
+
+
+	<script>
+		window.onload = () => {
+let activer = document.querySelectorAll("[type=checkbox]")
+for (let bouton of activer) {
+bouton.addEventListener("click", function () {
+let xmlhttp = new XMLHttpRequest;
+xmlhttp.open("get", `/admin/produit/activer/${
+this.dataset.id
+}`)
+xmlhttp.send()
+})
+}
+}
+	</script>
+
+{% endblock %}

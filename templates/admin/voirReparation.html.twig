@@ -1,0 +1,199 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Détails de la Réparation | Electro-Multifix
+{% endblock %}
+
+{% block body %}
+	{% include 'admin/_menu.html.twig' %}
+
+	<div class="my-3 text-center">
+		<h2>Détails de la Réparation</h2>
+	</div>
+
+
+	<div class="container mt-5">
+
+		<div class="row">
+			{% if reparation.statusReparation =="Terminé" or (app.user.roles == 'ROLE_ADMIN' or app.user.roles == 'ROLE_EMPLOYER') %}
+				<div class="my-2">
+					<a href="{{path('generate_pdf_reparation',{'matricule':reparation.matricule,'id':reparation.id})}}" class="btn btn-secondary">Imprimer la Facture</a>
+				</div>
+			{% else %}
+				<div class="my-2">
+					<p class="text-danger">Votre Réparation est cours de traitements. vous pouvez annuler la réparation avant qu'elle passe à terminer.
+						<form action="{{path('admin_reparation_supp',{'id':reparation.id})}}" method="post" style="display:inline;">
+							<button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir Annuler cette réparation ?')">
+								Annuler la réparation
+							</button>
+						</form>
+					</p>
+				</div>
+			{% endif %}
+		</div>
+		<div class="row">
+			<div class="col-12 col-md-7">
+				<div class="card shadow-sm mt-4 border border-danger">
+					<div class="card-body">
+						<h3 class="card-title text-center">{{ reparation.service.titre }}</h3>
+						<div
+							class="row">
+							<!-- Informations principales -->
+							<div class="col-md-6">
+								<p>
+									<strong>Matricule :</strong>
+									{{ reparation.matricule }}
+								</p>
+								<p>
+									<strong>Nom du client :</strong>
+									{{ reparation.user.nom }}
+								</p>
+								<p>
+									<strong>Téléphone :</strong>
+									{{ reparation.phone }}
+								</p>
+								<p>
+									<strong>Adresse :</strong>
+									{{ reparation.user.adresse }}
+								</p>
+
+							</div>
+							<!-- Dates et description -->
+							<div class="col-md-6">
+								<p>
+									<strong>Date deposeé :</strong>
+									{{ reparation.createdAt|date('d/m/Y') }}
+								</p>
+								<p>
+									<strong>Date reprise :</strong>
+									{{ reparation.dateRepri|date('d/m/Y') }}
+								</p>
+
+								<p>
+									<strong>Prix :</strong>
+									{{ reparation.prix | number_format(0, '', ' ')}}
+									FDJ
+								</p>
+
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="card p-3 my-2 border border-danger">
+					<div class="card-body">
+						<p>
+							<strong>Description :</strong>
+							<br>
+							{{ reparation.description }}
+						</p>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="col-12 col-md-5">
+				<div
+					class="card p-3 mt-4 border border-dark">
+					<!-- Image -->
+					{% if reparation.image %}
+						<div class="text-center mb-4">
+							<img src="{{ asset('assets/images/reparations/' ~ reparation.image) }}" alt="Image de la réparation" class="img-fluid rounded clickable-image" style="max-height: 300px;">
+						</div>
+					{% endif %}
+
+				</div>
+
+
+				{% if app.user.fonction == "ROLE_ADMIN" or app.user.fonction == "ROLE_EMPLOYER" %}
+					<div
+						class="card p-3 m-5 border border-primary">
+						<!-- Sélecteur de statut -->
+						<div class="text-center ">
+							<label for="status_reparation">
+								<strong>Statut de la réparation :</strong>
+							</label>
+							<!-- Afficher les messages flash -->
+							<div id="status_message" class="mt-4"></div>
+							<select id="status_reparation" name="statusReparation" class="form-select d-inline-block w-auto">
+								<option value="En cours" {{ reparation.statusReparation == 'En cours' ? 'selected' : '' }}>En cours</option>
+								<option value="Terminé" {{ reparation.statusReparation == 'Terminé' ? 'selected' : '' }}>Terminé</option>
+							</select>
+						</div>
+					</div>
+				{% endif %}
+			</div>
+
+
+		</div>
+
+
+	</div>
+	{% if app.user.fonction == "ROLE_ADMIN" or app.user.fonction == "ROLE_EMPLOYER" %}
+		<a href="{{ path('admin_services') }}" class="btn btn-secondary mt-3">Retour à la liste des réparations</a>
+	{% endif %}
+
+</div>
+
+
+<script>
+	document.getElementById('status_reparation').addEventListener('change', function () {
+const status = this.value;
+const url = "{{ path('admin_reparation_update_status', { id: reparation.id }) }}";
+const messageContainer = document.getElementById('status_message');
+
+fetch(url, {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json',
+'X-Requested-With': 'XMLHttpRequest',
+'X-CSRF-TOKEN': '{{ csrf_token('update_status') }}'
+},
+body: JSON.stringify(
+{status_reparation: status}
+)
+}).then(response => response.json()).then(data => {
+if (data.success) {
+messageContainer.innerHTML = `<div class="alert alert-success">${
+data.message
+}</div>`;
+} else {
+messageContainer.innerHTML = `<div class="alert alert-danger">${
+data.message
+}</div>`;
+}
+}).catch(error => {
+console.error('Erreur lors de la mise à jour :', error);
+messageContainer.innerHTML = `<div class="alert alert-danger">Une erreur est survenue.</div>`;
+});
+});
+
+// Image agrandit
+document.addEventListener('DOMContentLoaded', function () {
+const clickableImages = document.querySelectorAll('.clickable-image');
+
+clickableImages.forEach(image => {
+image.addEventListener('click', function () { // Créer un élément modal pour afficher l'image en grand
+const modal = document.createElement('div');
+modal.classList.add('image-modal');
+const modalImage = document.createElement('img');
+modalImage.src = this.src;
+modal.appendChild(modalImage);
+
+// Ajouter le modal au body
+document.body.appendChild(modal);
+
+// Ouvrir le modal
+setTimeout(() => modal.classList.add('open'), 10);
+
+// Fermer le modal lorsqu'on clique sur l'image agrandie
+modalImage.addEventListener('click', function () {
+modal.classList.remove('open');
+setTimeout(() => modal.remove(), 300); // Attendre la fin de l'animation avant de supprimer l'élément
+});
+});
+});
+});
+</script>{% endblock %}

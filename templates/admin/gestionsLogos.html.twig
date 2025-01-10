@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Gestions des logos | Electro-Multifix
+{% endblock %}
+
+{% block body %}
+
+	{% include 'admin/_menu.html.twig' %}
+
+
+	<div class="my-3 text-center">
+		<h2>Gestion des logos</h2>
+	</div>
+
+
+	<div
+		class="container mt-5">
+
+		<!-- Formulaire d'ajout ou de modification -->
+		<div class="card mb-4 border border-dark">
+			<div class="card-header bg-warning text-white">
+				<h4>Enregistrer un Logo</h4>
+			</div>
+			<div class="card-body">
+				{{ form_start(form) }}
+
+				<div class="row">
+					<div class="col-md-12 mb-3">
+						{{ form_widget(form) }}
+					</div>
+					<div class="col-md-12 mb-3">
+						<button type="submit" class="btn btn-success form-control border border-dark">Enregistrer</button>
+					</div>
+
+				</div>
+
+
+				{{ form_end(form) }}
+			</div>
+		</div>
+
+		<!-- Liste des coordonnées -->
+		<div class="card">
+			<div class="card-header bg-secondary text-white">
+				<h4>Liste des Logos</h4>
+			</div>
+
+			{% for type, messages in app.flashes %}
+				{% for message in messages %}
+					<div class="alert alert-{{ type }} alert-dismissible fade show" role="alert">
+						{{ message }}
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+					</div>
+				{% endfor %}
+			{% endfor %}
+
+
+			<div class="card-body table-responsive">
+				{% if logos is empty %}
+					<p class="text-center alert alert-info">Aucune logos disponible.</p>
+				{% else %}
+					<table class="table table-bordered table-striped">
+						<thead>
+							<tr class="text-center">
+								<th>#</th>
+								<th>Logos</th>
+								<th>Status</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for logo in logos %}
+								<tr>
+									<td class="text-center align-items-center">{{ logo.id }}</td>
+									<td class="text-center align-middle">
+										<img src="{{asset('assets/images/logos/'~ logo.image)}}" class="img-fluid rounded" width="60px">
+									</td>
+
+									<td class="text-center align-items-center">
+										<label class="form-switch">
+											<input type="checkbox" role="switch" {{(logo.status) ? 'checked' : ''}} data-id="{{logo.id}}">
+										</label>
+									</td>
+									<td class="text-center align-items-center">
+										<form action="{{ path('admin_logos_supp', {'id': logo.id}) }}" method="post" onsubmit="return confirm('Confirmer la suppression du coordonnée ?');" class="d-inline">
+											<input type="hidden" name="_token" value="{{ csrf_token('SUP' ~ logo.id) }}">
+											<button type="submit" class="btn btn-danger">
+												<i class="fa-regular fa-trash-can"></i>
+											</button>
+										</form>
+									</td>
+								</tr>
+
+							{% endfor %}
+						</tbody>
+					</table>
+				{% endif %}
+
+				<!-- Pagination -->
+				<div class="d-flex justify-content-center">
+					{{ knp_pagination_render(logos) }}
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<script>
+		window.onload = () => {
+let activer = document.querySelectorAll("[type=checkbox]")
+for (let bouton of activer) {
+bouton.addEventListener("click", function () {
+let xmlhttp = new XMLHttpRequest;
+xmlhttp.open("get", `/admin/logos/activer/${
+this.dataset.id
+}`)
+xmlhttp.send()
+})
+}
+}
+	</script>
+{% endblock %}
