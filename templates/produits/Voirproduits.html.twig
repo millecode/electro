@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	Détails du produits | Electro-multifix
+	Détails du produit | Electro-multifix
 {% endblock %}
 
 {% block body %}
@@ -14,8 +14,7 @@
 					class="col-md-12">
 					<!-- Subpage Header Box Start -->
 					<div class="page-header-box">
-						<h1 class="text-anime">Details du produits</h1>
-						<p>{{produit.titre}}</p>
+						<h1 class="text-anime">Details du produit</h1>
 					</div>
 					<!-- Subpage Header Box End -->
 				</div>
@@ -50,7 +49,7 @@
 									<div class="swiper-slide">
 										<div class="property-photo-item">
 											<figure class="image-anime text-center">
-												<img src="{{asset('assets/images/produits/'~ produit.image)}}" alt="{{produit.titre}}">
+												<img src="{{asset('assets/images/produits/'~ produit.image)}}" class="clickable-image" alt="{{produit.titre}}">
 											</figure>
 										</div>
 									</div>
@@ -74,7 +73,7 @@
 					<div
 						class="porperty-single-sidebar">
 						<!-- Property Information Box Start -->
-						<div class="property-info-box wow fadeInUp" data-wow-delay="0.25s">
+						<div class="property-info-box wow fadeInUp border border-dark" data-wow-delay="0.25s">
 
 							<div class="property-single-subtitle">
 								<h3>{{produit.titre}}</h3>
@@ -104,17 +103,6 @@
 								<!-- Property Info item Start-->
 								<div class="property-info-item">
 									<p>
-										<strong>Prix du produit :</strong>
-										{{ produit.prix |number_format(0, '', ' ') }}
-										FDJ
-									</p>
-								</div>
-								<!-- Property Info item End-->
-
-
-								<!-- Property Info item Start-->
-								<div class="property-info-item">
-									<p>
 										<strong>Livraison :</strong>
 										Gratuite
 									</p>
@@ -122,8 +110,14 @@
 								<!-- Property Info item End-->
 
 
+								<p class="text-center my-5 h5">
+									<strong>Prix du produit :</strong>
+									{{ produit.prix |number_format(0, '', ' ') }}
+									FDJ
+								</p>
+
 								{% if produit.produitSupp %}
-									<div class="text-center">
+									<div class="text-center my-3">
 										<a href="{{ path('cart_add', { id: produit.id }) }}" class="btn-default my-2">
 											<i class="fa-solid fa-cart-plus"></i>
 											Ajouter au panier
@@ -241,4 +235,34 @@
 		</div>
 	</div>
 	<!-- Property Sinlge Page End -->
+
+
+	<script>
+		// Image agrandit
+document.addEventListener('DOMContentLoaded', function () {
+const clickableImages = document.querySelectorAll('.clickable-image');
+
+clickableImages.forEach(image => {
+image.addEventListener('click', function () { // Créer un élément modal pour afficher l'image en grand
+const modal = document.createElement('div');
+modal.classList.add('image-modal');
+const modalImage = document.createElement('img');
+modalImage.src = this.src;
+modal.appendChild(modalImage);
+
+// Ajouter le modal au body
+document.body.appendChild(modal);
+
+// Ouvrir le modal
+setTimeout(() => modal.classList.add('open'), 10);
+
+// Fermer le modal lorsqu'on clique sur l'image agrandie
+modalImage.addEventListener('click', function () {
+modal.classList.remove('open');
+setTimeout(() => modal.remove(), 300); // Attendre la fin de l'animation avant de supprimer l'élément
+});
+});
+});
+});
+	</script>
 {% endblock %}

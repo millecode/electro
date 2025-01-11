@@ -1324,6 +1324,7 @@ header.main-header .header-sticky.active {
 }
 
 .post-item .post-featured-image {
+  height: 300px;
   border-radius: 20px;
   overflow: hidden;
   position: relative;
@@ -1399,7 +1400,7 @@ footer.footer {
   background: var(--secondary-color);
   padding: 30px 50px;
   border-radius: 20px;
-  margin-top: -70px;
+  margin-top: 70px;
   margin-bottom: 80px;
 }
 
@@ -3669,4 +3670,112 @@ footer.footer {
 /* Classe pour l'image agrandie */
 .image-modal.open {
   display: flex;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.quantity-controls input {
+  width: 50px;
+  height: 35px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.quantity-controls .btn {
+  width: 35px;
+  height: 35px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.quantity-controls .btn-outline-secondary {
+  border: 1px solid #ccc;
+  color: #333;
+}
+
+.quantity-controls .btn-outline-secondary:hover {
+  background-color: #f7f7f7;
+}
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.cart-item {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quantity-controls input {
+  width: 50px;
+  height: 35px;
+  text-align: center;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.quantity-controls .btn {
+  width: 35px;
+  height: 35px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.quantity-controls .btn-outline-secondary {
+  border: 1px solid #ccc;
+  color: #333;
+}
+
+.quantity-controls .btn-outline-secondary:hover {
+  background-color: #f7f7f7;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .cart-items {
+    gap: 10px;
+  }
+
+  .cart-item {
+    flex-direction: column;
+  }
+
+  .cart-item img {
+    width: 100%;
+  }
+
+  .card-body {
+    padding: 15px;
+  }
+
+  .quantity-controls input {
+    width: 40px;
+    height: 30px;
+  }
+
+  .quantity-controls .btn {
+    width: 30px;
+    height: 30px;
+  }
 }

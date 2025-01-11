@@ -102,7 +102,7 @@ class ProduitsController extends AbstractController
         $produits = $paginator->paginate(
             $query, // Requête Doctrine ou QueryBuilder
             $request->query->getInt('page', 1), // Numéro de la page
-            16 // Nombre d'éléments par page
+            25 // Nombre d'éléments par page
         );
 
         //Menu Categories

@@ -17,6 +17,16 @@ class CategorieRepository extends ServiceEntityRepository
         parent::__construct($registry, Categorie::class);
     }
 
+    public function findAll(): array
+    {
+        return $this->createQueryBuilder('c')  // Alias de catégorie
+            ->select('c') // Sélectionner seulement la catégorie
+            ->where('c.categorie != :aucune') // Exclure la catégorie "Aucune"
+            ->setParameter('aucune', 'Aucune') // Remplacer 'Aucune' par le nom exact de votre catégorie
+            ->getQuery()
+            ->getResult();
+    }
+
 
     /**
      * Récupère les catégories avec le nombre de produits associés, sauf la catégorie "Aucune".

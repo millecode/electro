@@ -34,12 +34,12 @@
 					<div
 						class="row">
 						<!-- Champ texte pour le titre -->
-						<div class="col-md-4">
+						<div class="col-md-4 mt-2">
 							<input type="text" name="titre" class="form-control border border-dark" placeholder="Rechercher par titre" value="{{ titre }}">
 						</div>
 
 						<!-- Menu déroulant des catégories -->
-						<div class="col-md-4">
+						<div class="col-md-4 mt-2">
 							<select name="categorie" class="form-select form-control border border-dark">
 								<option value="">Toutes les catégories</option>
 								{% for categorie in allCategories %}
@@ -51,8 +51,8 @@
 						</div>
 
 						<!-- Bouton de soumission -->
-						<div class="col-md-2">
-							<button class="btn-default" type="submit">Rechercher</button>
+						<div class="col-md-4 mt-2">
+							<button class="btn-default form-control" type="submit">Rechercher</button>
 						</div>
 					</div>
 				</form>
@@ -63,12 +63,12 @@
 
 
 	<!-- Blog Archive Page Start -->
-	<div class="blog-archive-page">
+	<div class="my-5">
 		<div class="container">
 			<div class="row">
 				{% if produits is empty %}
 					<div class="alert alert-info">
-						Aucun produits disponible pour le moments
+						Aucun produits trouvée.
 					</div>
 				{% else %}
 					{% for produit in produits %}
@@ -76,7 +76,7 @@
 							class="col-lg-3 col-md-6">
 							<!-- Post Item Start -->
 							<div
-								class="post-item wow fadeInUp border border-primary rounded p-2" data-wow-delay="0.25s">
+								class="post-item wow fadeInUp border border-dark rounded p-3" data-wow-delay="0.25s">
 								<!-- Post Featured Image Start -->
 								<div class="post-featured-image">
 									<figure>
@@ -89,23 +89,28 @@
 								</div>
 								<!-- Post Featured Image End -->
 
+								<hr
+								class="bg-danger">
 								<!-- Post Body Start -->
 								<div class="post-body">
-									<div class="post-category">
+									<h3 class="text-center">
+										<a href="{{path('voir_produit',{'id':produit.id,'slug':produit.slug})}}" class="text-primary">{{ produit.titre | slice(0, 20) ~ '...'}}</a>
+									</h3>
+									<div class="post-category text-center my-2">
 										<ul>
-											<li><a href="#">Catégorie :{{ produit.categorie.categorie }}</a></li>
+											<li>
+												<span class="badge bg-secondary p-2">{{ produit.categorie.categorie }}</span>
+											</li>
 										</ul>
 									</div>
-
-									<h3 class="text-center">
-										<a href="{{path('voir_produit',{'id':produit.id,'slug':produit.slug})}}">{{ produit.titre | slice(0, 30) ~ '...'}}</a>
-									</h3>
 								</div>
 								<!-- Post Body End -->
 								<!-- Property Item Footer Start -->
 								<div class="property-footer text-center">
-									<p class="property-price">{{ produit.prix |number_format(0, '', ' ') }}
-										FDJ</p>
+									<p class="property-price text-dark">
+										{{ produit.prix |number_format(0, '', ' ') }}
+										FDJ
+									</p>
 									<a href="{{ path('cart_add', { id: produit.id }) }}" class="btn-default">
 										<i class="fa-solid fa-cart-plus"></i>
 										Ajouter au panier
@@ -122,30 +127,12 @@
 
 			<div class="row">
 				<div
-					class="col-md-12">
+					class="col-md-12 mt-5">
 					<!-- Post Pagination Start -->
-					<div class="post-pagination wow fadeInUp" data-wow-delay="1.5s">
-						<ul class="pagination">
-							<li>
-								<a href="#">
-									<i class="fa-solid fa-arrow-left-long"></i>
-								</a>
-							</li>
-							<li>
-								<a href="#">1</a>
-							</li>
-							<li class="active">
-								<a href="#">2</a>
-							</li>
-							<li>
-								<a href="#">3</a>
-							</li>
-							<li>
-								<a href="#">
-									<i class="fa-solid fa-arrow-right-long"></i>
-								</a>
-							</li>
-						</ul>
+					<div class="wow fadeInUp" data-wow-delay="1.5s">
+						<div class="d-flex justify-content-center">
+							{{ knp_pagination_render(produits) }}
+						</div>
 					</div>
 					<!-- Post Pagination End -->
 				</div>

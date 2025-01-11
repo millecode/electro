@@ -82,7 +82,7 @@
 										{% else %}
 											{% for categorie in categoriess %}
 												<li class="nav-item">
-													<a class="nav-link" href="">{{categorie.categorie}}</a>
+													<a class="nav-link" href="{{path('liste_categorie',{'categorie':categorie.id})}}">{{categorie.categorie}}</a>
 												</li>
 											{% endfor %}
 										{% endif %}
@@ -148,10 +148,10 @@
 								</li>
 
 								<li class="nav-item highlighted-menu d-none d-lg-block">
-									<form action="#" method="get">
+									<form action="{{path('liste_categorie')}}" method="get">
 										<div class="row g-0 align-items-center">
 											<div class="col-sm-8">
-												<input type="text" class="form-control" placeholder="Entrer un produit....">
+												<input type="text" class="form-control" name="titre" placeholder="Entrer un produit....">
 											</div>
 											<div class="col-sm-4">
 												<button type="submit" class="btn-default">
@@ -179,60 +179,57 @@
 		</header>
 		<!-- Header End -->
 		{% block body %}{% endblock %}
-		<!-- Footer Section Start -->
-		<footer
-			class="footer">
-			<!-- Footer Newsletter Start -->
-			<div class="footer-newsletter">
-				<div class="container">
-					<div class="row">
-						<div
-							class="col-md-12">
-							<!-- Newsletter Box Start -->
-							<div class="newsletter-box">
-								<div class="row align-items-center">
-									<div
-										class="col-lg-6">
-										<!-- Section Title Start -->
-										<div class="newsletter-title">
-											<h2>Vous avez des questions ?</h2>
-											<p>En vous reponde le plus rapidement possible.</p>
-										</div>
-										<!-- Section Title End -->
-									</div>
 
-									<div
-										class="col-lg-6">
-										<!-- Newsletter Form Start -->
-										<div class="newsletter-form">
-											<form action="#">
-												<div class="row g-0 align-items-center">
-													<div class="col-sm-4"></div>
-													<div class="col-sm-4">
-														<a href="{{path('contact')}}" class="btn-default">Contactez-nous
-															<i class="fa-solid fa-arrow-right"></i>
-														</a>
-													</div>
-												</div>
-											</form>
-										</div>
-										<!-- Newsletter Form End -->
+
+		<div
+			class="container">
+			<!-- Newsletter Box Start -->
+			<div class="newsletter-box">
+				<div class="row align-items-center">
+					<div
+						class="col-lg-6">
+						<!-- Section Title Start -->
+						<div class="newsletter-title">
+							<h2>Vous avez des questions ?</h2>
+							<p>En vous reponde le plus rapidement possible.</p>
+						</div>
+						<!-- Section Title End -->
+					</div>
+
+					<div
+						class="col-lg-6">
+						<!-- Newsletter Form Start -->
+						<div class="newsletter-form">
+							<form action="#">
+								<div class="row g-0 align-items-center">
+									<div class="col-sm-4"></div>
+									<div class="col-sm-4">
+										<a href="{{path('contact')}}" class="btn-default text-center align-items-center rounded">Contactez-nous
+											<i class="fa-solid fa-arrow-right"></i>
+										</a>
 									</div>
 								</div>
-							</div>
-							<!-- Newsletter Box End -->
+							</form>
 						</div>
+						<!-- Newsletter Form End -->
 					</div>
 				</div>
 			</div>
-			<!-- Footer Newsletter End -->
+			<!-- Newsletter Box End -->
+		</div>
+
+
+		<!-- Footer Section Start -->
+		<footer
+			class="footer">
+
 
 			<!-- Mega Footer Start -->
 			<div class="mega-footer">
 				<div class="container">
 					<div class="row">
 						<div
-							class="text-center">
+							class="text-center mt-5">
 							<!-- Footer About Start -->
 							<div
 								class="footer-about text-center">

@@ -17,16 +17,28 @@ class ContactsType extends AbstractType
     {
         $builder
             ->add('nom', TextType::class, [
-                'label' => "Votre Nom"
+                'label' => "Votre Nom",
+                'attr' => [
+                    'class' => 'border border-dark'
+                ]
             ])
             ->add('email', EmailType::class, [
-                'label' => "Votre email"
+                'label' => "Votre email",
+                'attr' => [
+                    'class' => 'border border-dark'
+                ]
             ])
             ->add('phone', IntegerType::class, [
                 'label' => "Numero de télèphone",
+                'attr' => [
+                    'class' => 'border border-dark'
+                ]
             ])
             ->add('sujet', TextType::class, [
-                'label' => "Sujet"
+                'label' => "Sujet",
+                'attr' => [
+                    'class' => 'border border-dark'
+                ]
             ])
             ->add('message', TextareaType::class, [
                 'label' => "Décrire votre besoins",
@@ -34,6 +46,7 @@ class ContactsType extends AbstractType
                     'rows' => 5, // Hauteur en nombre de lignes
                     'cols' => 50, // Longueur en nombre de colonnes
                     'style' => 'resize: none;', // Désactive le redimensionnement manuel si nécessaire
+                    'class' => 'border border-dark'
                 ],
             ])
 
